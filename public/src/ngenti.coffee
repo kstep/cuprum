@@ -1,0 +1,37 @@
+angular.module 'ngenti.plugins.mpd', []
+    .config ['$routeProvider', ($route) ->
+        $route.when '/mpd',
+            templateUrl: 'plugins/mpd/index.html',
+            controller: 'MPDController'
+    ]
+
+    .controller 'MPDController', ['$scope', ($scope) ->
+        $scope.tracks = [
+            {artist: 'Rockabye Baby!', title: 'Knockin\' on Heaven\'s Door', genre: 'Lullaby', time: 2*60+59},
+            {artist: 'Rockabye Baby!', title: 'We Are Champions', genre: 'Ambient', time: 2*60+53},
+            {artist: 'Michael Armstrong', title: 'No Woman No Cry', genre: 'Lullaby', time: 5*60+41},
+            {artist: 'Мельница', title: 'Королевна', genre: 'Folk', time: 14*60+29},
+        ]
+        $scope.status = { song: 1 }
+    ]
+
+angular.module 'ngenti', ['ng', 'ngRoute', 'ngenti.plugins.mpd']
+    .filter 'time', [->
+        d2 = (v) -> if (v < 10)
+                '0' + v
+            else
+                v
+
+        (value) -> "#{Math.floor(value / 60)}:#{d2(value % 60)}"
+    ]
+    .controller 'NavigationController', ['$scope', '$location', ($scope, $location) ->
+        $scope.$location = $location
+        $scope.plugins = [
+            {module: 'ngenti.plugins.dashboard', route: '/', icon: 'dashboard', name: 'Dashboard', title: 'Dashboard'},
+            {module: 'ngenti.plugins.mpd', route: '/mpd', icon: 'music', name: 'MPD', title: 'Music Player Daemon'},
+            {module: 'ngenti.plugins.transmission', icon: 'download-alt', route: '/transmission', name: 'Transmission', title: 'Transmission Torrent Daemon'},
+            {module: 'ngenti.plugins.nginx', icon: 'cloud', route: '/nginx', name: 'Nginx', title: 'Nginx HTTP Server'},
+            {module: 'ngenti.plugins.dnsmasq', icon: 'globe', route: '/dnsmasq', name: 'Dnsmasq', title: 'Dnsmasq DNS Server'}
+        ]
+    ]
+    .controller 'ContentController', ['$scope', ($scope) -> {}]
