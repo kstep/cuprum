@@ -1,0 +1,19 @@
+{
+  "name": "ngenti",
+  "version": "0.0.1",
+  "description": "AngularJS based admin panel with Rust backend",
+  "main": "ngenti.js",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-bower-task": "^0.4.0",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-bower-concat": "^0.4.0",
+    "grunt-contrib-less": "^0.12.0"
+  },
+  "dependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Konstantin Stepanov <me@kstep.me>",
+  "license": "MIT"
+}

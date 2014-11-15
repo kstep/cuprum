@@ -1,0 +1,8 @@
+[package]
+
+name = "ngenti"
+version = "0.0.1"
+authors = ["Konstantin Stepanov <me@kstep.me>"]
+
+[dependencies.scgi]
+git = "https://github.com/kstep/rust-scgi.git"
