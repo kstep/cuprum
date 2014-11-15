@@ -17,6 +17,12 @@ module.exports = (grunt) ->
                 dest: 'build/bower.js'
                 cssDest: 'build/bower.css'
 
+        copy:
+            fonts:
+                files: [
+                    {expand: true, cwd: 'bower_components/bootstrap/', src: ['fonts/*.eot', 'fonts/*.woff', 'fonts/*.ttf', 'fonts/*.svg'], dest: 'dest/'}
+                ]
+
         coffee:
             compile:
                 options:
@@ -28,6 +34,14 @@ module.exports = (grunt) ->
                 src: ['**/*.coffee']
                 dest: 'build'
                 ext: '.js'
+
+        jade:
+            compile:
+                expand: true
+                cwd: 'src'
+                src: ['**/*.jade']
+                dest: 'dest'
+                ext: '.html'
 
         less:
             compile:
@@ -58,16 +72,30 @@ module.exports = (grunt) ->
                     ext: '.min.js'
                 ]
 
+        connect:
+            server:
+                options:
+                    port: 8080
+                    base: 'dest'
+                    keepalive: true
+
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
+    grunt.loadNpmTasks 'grunt-contrib-jade'
     grunt.loadNpmTasks 'grunt-contrib-less'
+    grunt.loadNpmTasks 'grunt-contrib-copy'
+    grunt.loadNpmTasks 'grunt-contrib-connect'
     grunt.loadNpmTasks 'grunt-bower-task'
     grunt.loadNpmTasks 'grunt-bower-concat'
+
     grunt.registerTask 'default', [
+        'bower:install'
         'bower_concat:all'
+        'copy:fonts'
         'coffee:compile'
         'less:compile'
+        'jade:compile'
         'uglify:build'
         'cssmin:build'
     ]

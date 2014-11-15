@@ -1,0 +1,36 @@
+doctype html
+html(lang="en" ng-app="ngenti")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Ngenti
+
+    link(href="bower.min.css", rel="stylesheet")
+    link(href="dashboard.min.css", rel="stylesheet")
+
+  body
+    nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
+      .container-fluid: .navbar-header
+          button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#navbar")
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand Ngenti
+          #navbar.navbar-collapse.collapse
+            ul.nav.navbar-nav.navbar-right
+    .container-fluid
+      .row
+        .col-sm-3.col-md-2.sidebar(ng-controller="NavigationController")
+          ul.nav.nav-sidebar
+            li.ng-cloak(ng-repeat="plugin in plugins", ng-class="{'active': $location.path() == plugin.route}")
+              a(ng-href="#{{plugin.route}}", title="{{plugin.title}}")
+                span.glyphicon(class="glyphicon-{{plugin.icon}}")
+                = " {{plugin.name}}"
+        .col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main(ng-controller="ContentController")
+          ng-view/
+
+    // Include all compiled plugins (below), or include individual files as needed
+    script(src="bower.min.js")
+    script(src="ngenti.min.js")

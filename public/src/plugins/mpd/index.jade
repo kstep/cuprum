@@ -1,0 +1,46 @@
+h1.page-header MPD
+.row
+  .btn-group.col-sm-2
+    button.btn.btn-default.btn-sm(title="Repeat", ng-click="status.repeat = !status.repeat", ng-class="{'active':status.repeat}"): span.glyphicon.glyphicon-repeat
+    button.btn.btn-default.btn-sm(title="Random", ng-click="status.random = !status.random", ng-class="{'active':status.random}"): span.glyphicon.glyphicon-random
+    button.btn.btn-default.btn-sm(title="Single", ng-click="status.single = !status.single", ng-class="{'active':status.single}"): span.glyphicon.glyphicon-pushpin
+    button.btn.btn-default.btn-sm(title="Consume", ng-click="status.consume = !status.consume", ng-class="{'active':status.consume}"): span.glyphicon.glyphicon-eject
+
+  .col-sm-2
+      progress(title="Position", min="0", max="100", value="40")
+      button.btn.btn-default.btn-sm(title="Refresh"): span.glyphicon.glyphicon-refresh
+
+  .col-sm-2.pull-right.btn-group
+    button.btn.btn-default.btn-sm(title="Previous track", ng-click="mpd.prev()"): span.glyphicon.glyphicon-step-backward
+    button.btn.btn-default.btn-sm(title="Play", ng-click="mpd.play()"): span.glyphicon.glyphicon-play
+    button.btn.btn-default.btn-sm(title="Stop", ng-click="mpd.stop()"): span.glyphicon.glyphicon-stop
+    button.btn.btn-default.btn-sm(title="Next track", ng-click="mpd.next()"): span.glyphicon.glyphicon-step-forward
+
+  .col-sm-2.pull-right
+    button.btn.btn-default.btn-sm(title="Mute"): span.glyphicon.glyphicon-volume-off
+    .col-sm-9: input.inline.input-sm(ng-model="status.volume", type="range", max="100", min="0", step="1", title="Volume")
+
+.row
+  br
+  ul.nav.nav-tabs(role="tablist")
+    li.active: a Now Playing
+    li: a Playlists
+    li: a Library
+    li: a Outputs
+
+  table.table
+    thead: tr
+      th Artist
+      th Title
+      th Genre
+      th(style="width: 1%;") Time
+      th Action
+
+    tbody: tr(ng-repeat="item in tracks", ng-class="{'active': $index == status.song}")
+      td {{item.artist}}
+      td {{item.title}}
+      td {{item.genre}}
+      td(style="text-align: right;") {{item.time | time}}
+      td: .btn-group
+        button.btn.btn-xs.btn-default: span.glyphicon.glyphicon-play
+        button.btn.btn-xs.btn-default: span.glyphicon.glyphicon-remove-circle
