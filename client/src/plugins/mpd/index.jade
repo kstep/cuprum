@@ -12,6 +12,9 @@ mixin table(attrs, ...titles)
     tbody
       block
 
+mixin progress
+  progressbar&attributes(attributes) {{attributes.value}}
+
 h1.page-header MPD
 .row
   .btn-group.col-sm-2
@@ -20,9 +23,10 @@ h1.page-header MPD
     button.btn.btn-default.btn-sm(title="Single", ng-click="status.single = !status.single", ng-class="{'active':status.single}"): +icon("pushpin")
     button.btn.btn-default.btn-sm(title="Consume", ng-click="status.consume = !status.consume", ng-class="{'active':status.consume}"): +icon("eject")
 
-  .col-sm-2
-      progress(title="Position", min="0", max="100", value="40")
-      button.btn.btn-default.btn-sm(title="Refresh"): +icon("refresh")
+  .col-sm-3
+    output.col-sm-1(style="display: inline-block", for="position") {{status.position | time}}
+    .col-sm-8: input#position.inline.input-sm(ng-model="status.position", type="range", max="100", min="0", step="1", title="Position")
+    button.btn.btn-default.btn-sm(title="Refresh"): +icon("refresh")
 
   .col-sm-2.pull-right.btn-group
     button.btn.btn-default.btn-sm(title="Previous track", ng-click="mpd.prev()"): +icon("step-backward")
@@ -33,20 +37,19 @@ h1.page-header MPD
   .col-sm-2.pull-right
     button.btn.btn-default.btn-sm(title="Mute", ng-class="{'active': status.muted}" ng-click="status.muted = !status.muted"): +icon("volume-off")
     output.col-sm-1(style="display: inline-block", for="volume") {{status.volume}}%
-    .col-sm-7
-      input#volume.inline.input-sm(ng-model="status.volume", type="range", max="100", min="0", step="1", title="Volume")
+    .col-sm-7: input#volume.inline.input-sm(ng-model="status.volume", type="range", max="100", min="0", step="1", title="Volume")
 
 .row
   br
   tabset
     tab(heading="Now Playing")
-      +table({"Time":{style: 'width: 1%'}, "Actions":{style: 'width: 1%'}}, "Artist", "Title", "Genre", "Time", "Actions")
+      +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 1%'}}, "Artist", "Title", "Genre", "Time", "Actions")
         tr(ng-repeat="item in tracks", ng-class="{'active': $index == status.song}")
           td {{item.artist}}
           td {{item.title}}
           td {{item.genre}}
           td(style="text-align: right;") {{item.time | time}}
-          td: .btn-group
+          td.actions: .btn-group
             button.btn.btn-xs.btn-default: +icon("play")
             button.btn.btn-xs.btn-default: +icon("remove-circle")
 
@@ -54,9 +57,33 @@ h1.page-header MPD
       +table({"Actions":{style: 'width: 1%'}}, "Name", "Actions")
         tr(ng-repeat="item in playlists")
           td {{item.name}}
-          td: .btn-group
+          td.actions: .btn-group
             button.btn.btn-xs.btn-default: +icon("play")
             button.btn.btn-xs.btn-default: +icon("remove-circle")
+
+    tab(heading="Library")
+      table.table
+        thead
+          tr
+            th Artist
+              br
+              input(placeholder="Artist", ng-model="filter.artist")
+            th Title
+              br
+              input(placeholder="Title", ng-model="filter.title")
+            th Genre
+              br
+              input(placeholder="Genre", ng-model="filter.genre")
+            th(style="width: 1%") Time
+            th(style="width: 1%") Actions
+        tbody
+          tr(ng-repeat="item in library | filter:filter")
+            td {{item.artist}}
+            td {{item.title}}
+            td {{item.genre}}
+            td {{item.time | time}}
+            td.actions
+              button.btn.btn-default.btn-xs: +icon("play")
 
     tab(heading="Outputs")
       +table({"": {style: 'width: 1%'}}, "", "Name")
