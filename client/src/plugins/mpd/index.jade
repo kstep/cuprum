@@ -1,48 +1,63 @@
+//- vim: sw=2
+
+mixin icon(name)
+  span.glyphicon(class="glyphicon-#{name}")
+
+mixin table(attrs, ...titles)
+  table.table
+    thead: tr
+      each title in titles
+        th&attributes(attrs[title]||{})= title
+
+    tbody
+      block
+
 h1.page-header MPD
 .row
   .btn-group.col-sm-2
-    button.btn.btn-default.btn-sm(title="Repeat", ng-click="status.repeat = !status.repeat", ng-class="{'active':status.repeat}"): span.glyphicon.glyphicon-repeat
-    button.btn.btn-default.btn-sm(title="Random", ng-click="status.random = !status.random", ng-class="{'active':status.random}"): span.glyphicon.glyphicon-random
-    button.btn.btn-default.btn-sm(title="Single", ng-click="status.single = !status.single", ng-class="{'active':status.single}"): span.glyphicon.glyphicon-pushpin
-    button.btn.btn-default.btn-sm(title="Consume", ng-click="status.consume = !status.consume", ng-class="{'active':status.consume}"): span.glyphicon.glyphicon-eject
+    button.btn.btn-default.btn-sm(title="Repeat", ng-click="status.repeat = !status.repeat", ng-class="{'active':status.repeat}"): +icon("repeat")
+    button.btn.btn-default.btn-sm(title="Random", ng-click="status.random = !status.random", ng-class="{'active':status.random}"): +icon("random")
+    button.btn.btn-default.btn-sm(title="Single", ng-click="status.single = !status.single", ng-class="{'active':status.single}"): +icon("pushpin")
+    button.btn.btn-default.btn-sm(title="Consume", ng-click="status.consume = !status.consume", ng-class="{'active':status.consume}"): +icon("eject")
 
   .col-sm-2
       progress(title="Position", min="0", max="100", value="40")
-      button.btn.btn-default.btn-sm(title="Refresh"): span.glyphicon.glyphicon-refresh
+      button.btn.btn-default.btn-sm(title="Refresh"): +icon("refresh")
 
   .col-sm-2.pull-right.btn-group
-    button.btn.btn-default.btn-sm(title="Previous track", ng-click="mpd.prev()"): span.glyphicon.glyphicon-step-backward
-    button.btn.btn-default.btn-sm(title="Play", ng-click="mpd.play()"): span.glyphicon.glyphicon-play
-    button.btn.btn-default.btn-sm(title="Stop", ng-click="mpd.stop()"): span.glyphicon.glyphicon-stop
-    button.btn.btn-default.btn-sm(title="Next track", ng-click="mpd.next()"): span.glyphicon.glyphicon-step-forward
+    button.btn.btn-default.btn-sm(title="Previous track", ng-click="mpd.prev()"): +icon("step-backward")
+    button.btn.btn-default.btn-sm(title="Play", ng-click="mpd.play()"): +icon("play")
+    button.btn.btn-default.btn-sm(title="Stop", ng-click="mpd.stop()"): +icon("stop")
+    button.btn.btn-default.btn-sm(title="Next track", ng-click="mpd.next()"): +icon("step-forward")
 
   .col-sm-2.pull-right
-    button.btn.btn-default.btn-sm(title="Mute"): span.glyphicon.glyphicon-volume-off
+    button.btn.btn-default.btn-sm(title="Mute"): +icon("volume-off")
     .col-sm-9: input.inline.input-sm(ng-model="status.volume", type="range", max="100", min="0", step="1", title="Volume")
 
 .row
   br
-  ul.nav.nav-tabs(role="tablist")
-    li.active: a Now Playing
-    li: a Playlists
-    li: a Library
-    li: a Outputs
+  tabset
+    tab(heading="Now Playing")
+      +table({"Time":{style: 'width: 1%'}, "Actions":{style: 'width: 1%'}}, "Artist", "Title", "Genre", "Time", "Actions")
+        tr(ng-repeat="item in tracks", ng-class="{'active': $index == status.song}")
+          td {{item.artist}}
+          td {{item.title}}
+          td {{item.genre}}
+          td(style="text-align: right;") {{item.time | time}}
+          td: .btn-group
+            button.btn.btn-xs.btn-default: +icon("play")
+            button.btn.btn-xs.btn-default: +icon("remove-circle")
 
-  .gridStyle(ng-grid="tracksGrid")
+    tab(heading="Playlists")
+      +table({"Actions":{style: 'width: 1%'}}, "Name", "Actions")
+        tr(ng-repeat="item in playlists")
+          td {{item.name}}
+          td: .btn-group
+            button.btn.btn-xs.btn-default: +icon("play")
+            button.btn.btn-xs.btn-default: +icon("remove-circle")
 
-  table.table
-    thead: tr
-      th Artist
-      th Title
-      th Genre
-      th(style="width: 1%;") Time
-      th Action
-
-    tbody: tr(ng-repeat="item in tracks", ng-class="{'active': $index == status.song}")
-      td {{item.artist}}
-      td {{item.title}}
-      td {{item.genre}}
-      td(style="text-align: right;") {{item.time | time}}
-      td: .btn-group
-        button.btn.btn-xs.btn-default: span.glyphicon.glyphicon-play
-        button.btn.btn-xs.btn-default: span.glyphicon.glyphicon-remove-circle
+    tab(heading="Outputs")
+      +table({"": {style: 'width: 1%'}}, "", "Name")
+        tr(ng-repeat="item in outputs")
+          td: button.btn.btn-default.btn-xs(ng-click="item.active = !item.active", ng-class="{'active': item.active}"): +icon("volume-up")
+          td {{item.name}}
