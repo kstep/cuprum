@@ -93,6 +93,11 @@ module.exports = (grunt) ->
                 files: ['**/*.jade']
                 tasks: ['jade:compile']
 
+        clean: [
+            "build"
+            "dest"
+        ]
+
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
@@ -101,6 +106,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-connect'
     grunt.loadNpmTasks 'grunt-contrib-watch'
+    grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-bower-task'
     grunt.loadNpmTasks 'grunt-bower-concat'
 
