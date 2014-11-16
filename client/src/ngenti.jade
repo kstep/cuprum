@@ -6,8 +6,8 @@ html(lang="en" ng-app="ngenti")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     title Ngenti
 
-    link(href="bower.min.css", rel="stylesheet")
-    link(href="dashboard.min.css", rel="stylesheet")
+    link(href="libs.min.css", rel="stylesheet")
+    link(href="ngenti.min.css", rel="stylesheet")
 
   body
     nav.navbar.navbar-inverse.navbar-fixed-top(role="navigation")
@@ -32,6 +32,6 @@ html(lang="en" ng-app="ngenti")
           ng-view/
 
     // Include all compiled plugins (below), or include individual files as needed
-    script(src="bower.min.js")
-    script(src="plugins/mpd/index.min.js")
+    script(src="libs.min.js")
+    script(src="plugins/mpd/main.min.js")
     script(src="ngenti.min.js")

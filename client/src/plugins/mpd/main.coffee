@@ -1,7 +1,7 @@
 angular.module 'ngenti.plugins.mpd', ['ui.bootstrap']
     .config ['$routeProvider', ($route) ->
         $route.when '/mpd',
-            templateUrl: 'plugins/mpd/index.html',
+            templateUrl: 'plugins/mpd/main.html',
             controller: 'MPDController'
     ]
 

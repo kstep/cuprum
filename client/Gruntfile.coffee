@@ -14,8 +14,8 @@ module.exports = (grunt) ->
 
         bower_concat:
             all:
-                dest: 'build/bower.js'
-                cssDest: 'build/bower.css'
+                dest: 'build/libs.js'
+                cssDest: 'build/libs.css'
 
         copy:
             fonts:
