@@ -108,14 +108,13 @@ module.exports = (grunt) ->
                 ]
             compile:
                 tasks: [
-                    { grunt: true, args: ['bower:install'] }
+                    { grunt: true, args: ['bower:install', 'bower_concat:all'] }
                     { grunt: true, args: ['coffee:compile'] }
                     { grunt: true, args: ['less:compile'] }
                     { grunt: true, args: ['jade:compile'] }
                 ]
             build:
                 tasks: [
-                    { grunt: true, args: ['bower_concat:all'] }
                     { grunt: true, args: ['uglify:build'] }
                     { grunt: true, args: ['cssmin:build'] }
                     { grunt: true, args: ['copy:fonts'] }
