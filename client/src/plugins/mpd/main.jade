@@ -25,7 +25,7 @@ h1.page-header MPD
 
   .col-sm-3
     output.col-sm-1(style="display: inline-block", for="position") {{status.position | time}}
-    .col-sm-8: input#position.inline.input-sm(ng-model="status.position", type="range", max="100", min="0", step="1", title="Position")
+    .col-sm-9: input#position.inline.input-sm(ng-model="status.position", type="range", max="100", min="0", step="1", title="Position")
     button.btn.btn-default.btn-sm(title="Refresh"): +icon("refresh")
 
   .col-sm-2.pull-right.btn-group
