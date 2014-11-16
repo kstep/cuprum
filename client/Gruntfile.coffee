@@ -98,6 +98,29 @@ module.exports = (grunt) ->
             "dest"
         ]
 
+        parallel:
+            dev:
+                options:
+                    stream: true
+                tasks: [
+                    { grunt: true, args: ['watch'] }
+                    { grunt: true, args: ['connect'] }
+                ]
+            compile:
+                tasks: [
+                    { grunt: true, args: ['bower:install'] }
+                    { grunt: true, args: ['coffee:compile'] }
+                    { grunt: true, args: ['less:compile'] }
+                    { grunt: true, args: ['jade:compile'] }
+                ]
+            build:
+                tasks: [
+                    { grunt: true, args: ['bower_concat:all'] }
+                    { grunt: true, args: ['uglify:build'] }
+                    { grunt: true, args: ['cssmin:build'] }
+                    { grunt: true, args: ['copy:fonts'] }
+                ]
+
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
@@ -109,14 +132,9 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-clean'
     grunt.loadNpmTasks 'grunt-bower-task'
     grunt.loadNpmTasks 'grunt-bower-concat'
+    grunt.loadNpmTasks 'grunt-parallel'
 
     grunt.registerTask 'default', [
-        'bower:install'
-        'bower_concat:all'
-        'copy:fonts'
-        'coffee:compile'
-        'less:compile'
-        'jade:compile'
-        'uglify:build'
-        'cssmin:build'
+        'parallel:compile'
+        'parallel:build'
     ]
