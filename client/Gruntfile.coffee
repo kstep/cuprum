@@ -79,6 +79,20 @@ module.exports = (grunt) ->
                     base: 'dest'
                     keepalive: true
 
+        watch:
+            options:
+                cwd: 'src'
+                interrupt: true
+            coffee:
+                files: ['**/*.coffee']
+                tasks: ['coffee:compile', 'uglify:build']
+            less:
+                files: ['**/*.less']
+                tasks: ['less:compile', 'cssmin:build']
+            jade:
+                files: ['**/*.jade']
+                tasks: ['jade:compile']
+
     grunt.loadNpmTasks 'grunt-contrib-uglify'
     grunt.loadNpmTasks 'grunt-contrib-coffee'
     grunt.loadNpmTasks 'grunt-contrib-cssmin'
@@ -86,6 +100,7 @@ module.exports = (grunt) ->
     grunt.loadNpmTasks 'grunt-contrib-less'
     grunt.loadNpmTasks 'grunt-contrib-copy'
     grunt.loadNpmTasks 'grunt-contrib-connect'
+    grunt.loadNpmTasks 'grunt-contrib-watch'
     grunt.loadNpmTasks 'grunt-bower-task'
     grunt.loadNpmTasks 'grunt-bower-concat'
 
