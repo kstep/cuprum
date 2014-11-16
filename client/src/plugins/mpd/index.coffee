@@ -1,4 +1,4 @@
-angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ui.grid']
+angular.module 'ngenti.plugins.mpd', ['ui.bootstrap']
     .config ['$routeProvider', ($route) ->
         $route.when '/mpd',
             templateUrl: 'plugins/mpd/index.html',
