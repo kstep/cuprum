@@ -114,10 +114,14 @@ body {
     z-index: 1500;
     position: fixed;
     display: none;
+    .transition(width 1s ease-in-out);
 
     &.active {
         display: block;
-        .animation(loader 10s ease-in-out 0s infinite normal);
+    }
+
+    &.active.indefinite {
+        .animation(loader 5s ease-in-out 0s infinite normal);
     }
 }
 
@@ -127,6 +131,14 @@ body {
    -ms-animation: @arguments;
    -moz-animation: @arguments;
    -webkit-animation: @arguments;
+}
+
+.transition(...) {
+   transition: @arguments;
+   -o-transition: @arguments;
+   -ms-transition: @arguments;
+   -moz-transition: @arguments;
+   -webkit-transition: @arguments;
 }
 
 .loader-frames() {
