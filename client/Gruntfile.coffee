@@ -137,3 +137,7 @@ module.exports = (grunt) ->
         'parallel:compile'
         'parallel:build'
     ]
+
+    grunt.registerTask 'dev', [
+        'parallel:dev'
+    ]
