@@ -105,3 +105,39 @@ body {
     border-radius: 50%;
   }
 }
+
+.loader {
+    width: 0%;
+    height: 3px;
+    top: 0;
+    background: #d43f3a;
+    z-index: 1500;
+    position: fixed;
+    display: none;
+
+    &.active {
+        display: block;
+        .animation(loader 10s ease-in-out 0s infinite normal);
+    }
+}
+
+.animation(...) {
+   animation: @arguments;
+   -o-animation: @arguments;
+   -ms-animation: @arguments;
+   -moz-animation: @arguments;
+   -webkit-animation: @arguments;
+}
+
+.loader-frames() {
+    0% { width: 0%; left: 0; }
+    33% { width: 100%; left: 0; }
+    66% { width: 100%; right: 0; }
+    100% { width: 0%; right: 0; }
+}
+
+@keyframes loader { .loader-frames(); }
+@-o-keyframes loader { .loader-frames(); }
+@-ms-keyframes loader { .loader-frames(); }
+@-moz-keyframes loader { .loader-frames(); }
+@-webkit-keyframes loader { .loader-frames(); }
