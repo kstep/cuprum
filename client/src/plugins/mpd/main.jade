@@ -45,10 +45,10 @@ h1.page-header MPD
     tab(heading="Now Playing")
       +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 1%'}}, "Artist", "Title", "Genre", "Time", "Actions")
         tr(ng-repeat="item in queue", ng-class="{'active': $index == status.song}")
-          td {{item.artist}}
-          td {{item.title}}
-          td {{item.genre}}
-          td(style="text-align: right;") {{item.time | time}}
+          td {{item.tags.Artist}}
+          td {{item.tags.Title}}
+          td {{item.tags.Genre}}
+          td(style="text-align: right;") {{item.duration / 1000 | time}}
           td.actions: .btn-group
             button.btn.btn-xs.btn-default: +icon("play")
             button.btn.btn-xs.btn-default: +icon("remove-circle")
