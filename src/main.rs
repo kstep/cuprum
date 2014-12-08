@@ -12,12 +12,14 @@ use std::str::from_utf8;
 
 fn not_found(s: &mut Stream) -> IoResult<()> {
     s.write_str("Status: 404 Not Found\r\n").and_then(|()|
+    s.write_str("Content-Type: application/json\r\n")).and_then(|()|
     s.write_str("\r\n")).and_then(|()|
-    s.write_str("<h1>404: Object not found</h1>\r\n"))
+    s.write_str("{\"error\":\"object not found\"}"))
 }
 
 fn json_result(s: &mut Stream, r: String) -> IoResult<()> {
     s.write_str("Status: 200 OK\r\n").and_then(|()|
+    s.write_str("Content-Type: application/json\r\n")).and_then(|()|
     s.write_str("\r\n")).and_then(|()|
     s.write_str(r[]))
 }
