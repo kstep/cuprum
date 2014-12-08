@@ -17,21 +17,19 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource']
     .factory 'CurrentSong', ['$resource', ($resource) ->
         $resource '/plugins/mpd/current-song.json'
     ]
+    .factory 'Outputs', ['$resource', ($resource) ->
+        $resource '/plugins/mpd/outputs.json'
+    ]
+    .factory 'Playlists', ['$resource', ($resource) ->
+        $resource '/plugins/mpd/playlists.json'
+    ]
 
-    .controller 'MPDController', ['$scope', 'Queue', 'Status', 'CurrentSong', ($scope, Queue, Status, CurrentSong) ->
+    .controller 'MPDController', ['$scope', 'Queue', 'Status', 'CurrentSong', 'Outputs', 'Playlists', ($scope, Queue, Status, CurrentSong, Outputs, Playlists) ->
         $scope.queue = Queue.query()
         $scope.status = Status.get()
         # $scope.current_song = CurrentSong.get()
-
-        $scope.playlists = [
-            {name: 'Колыбельные'}
-            {name: 'Рок-радио'}
-        ]
-
-        $scope.outputs = [
-            {name: 'Default ALSA Output', active: true}
-            {name: 'My Streaming Radio', active: false}
-        ]
+        $scope.playlists = Playlists.query()
+        $scope.outputs = Outputs.query()
 
         $scope.library = [
             {artist: 'Alicia Keys', title: 'A Harlem Love Story (Fallin\' / A Woman\'s Worth)', genre: 'R&B/Soul', time: 10*60+4}

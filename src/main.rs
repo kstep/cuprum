@@ -36,6 +36,8 @@ fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
                         "queue.json" => json_result(s, json::encode(&mpc.queue().songs())),
                         "status.json" => json_result(s, json::encode(&mpc.status())),
                         "current-song.json" => json_result(s, json::encode(&mpc.current_song())),
+                        "outputs.json" => json_result(s, json::encode(&mpc.outputs())),
+                        "playlists.json" => json_result(s, json::encode(&mpc.playlists())),
                         _ => not_found(s)
                     },
                     _ => not_found(s)
