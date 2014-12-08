@@ -8,4 +8,4 @@ authors = ["Konstantin Stepanov <me@kstep.me>"]
 git = "https://github.com/kstep/rust-scgi.git"
 
 [dependencies.mpd]
-git = "file:///home/kstep/git/rust-mpd/.git"
+git = "https://github.com/kstep/rust-mpd.git"
