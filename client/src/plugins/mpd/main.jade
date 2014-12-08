@@ -24,7 +24,7 @@ h1.page-header MPD
     button.btn.btn-default.btn-sm(title="Consume", ng-click="status.consume = !status.consume", ng-class="{'active':status.consume}"): +icon("eject")
 
   .col-sm-4
-    output.col-sm-3.text-right(style="display: inline-block", for="position") {{status.elapsed_time / 1000 | time}} / {{status.total_time / 1000 | time}}
+    output.col-sm-3.text-right(style="display: inline-block; white-space: nowrap;", for="position") {{status.elapsed_time / 1000 | time}} / {{status.total_time / 1000 | time}}
     .col-sm-7: input#position.inline.input-sm(ng-model="status.elapsed_time", type="range", max="303000", min="0", step="1000", title="Position")
     button.btn.btn-default.btn-sm(title="Refresh"): +icon("refresh")
 
