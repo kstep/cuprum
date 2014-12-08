@@ -25,12 +25,13 @@ h1.page-header MPD
 
   .col-sm-4
     output.col-sm-3.text-right(style="display: inline-block", for="position") {{status.elapsed_time / 1000 | time}} / {{status.total_time / 1000 | time}}
-    .col-sm-7: input#position.inline.input-sm(ng-model="status.position", type="range", max="100", min="0", step="1", title="Position")
+    .col-sm-7: input#position.inline.input-sm(ng-model="status.elapsed_time", type="range", max="303000", min="0", step="1000", title="Position")
     button.btn.btn-default.btn-sm(title="Refresh"): +icon("refresh")
 
   .col-sm-2.pull-right.btn-group
     button.btn.btn-default.btn-sm(title="Previous track", ng-click="mpd.prev()"): +icon("step-backward")
-    button.btn.btn-default.btn-sm(title="Play", ng-click="mpd.play()"): +icon("play")
+    button.btn.btn-default.btn-sm(title="Play", ng-show="status.state != 'Play'", ng-click="mpd.play()"): +icon("play")
+    button.btn.btn-default.btn-sm(title="Pause", ng-show="status.state == 'Play'", ng-click="mpd.pause()"): +icon("pause")
     button.btn.btn-default.btn-sm(title="Stop", ng-click="mpd.stop()"): +icon("stop")
     button.btn.btn-default.btn-sm(title="Next track", ng-click="mpd.next()"): +icon("step-forward")
 
@@ -44,7 +45,7 @@ h1.page-header MPD
   tabset
     tab(heading="Now Playing")
       +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 1%'}}, "Artist", "Title", "Genre", "Time", "Actions")
-        tr(ng-repeat="item in queue", ng-class="{'active': $index == status.song}")
+        tr(ng-repeat="item in queue", ng-class="{'success': item.id == status.song[0]}")
           td {{item.tags.Artist}}
           td {{item.tags.Title}}
           td {{item.tags.Genre}}
@@ -56,7 +57,7 @@ h1.page-header MPD
     tab(heading="Playlists")
       +table({"Actions":{style: 'width: 1%'}}, "Name", "Actions")
         tr(ng-repeat="item in playlists")
-          td {{item.name}}
+          td {{item.path}}
           td.actions: .btn-group
             button.btn.btn-xs.btn-default: +icon("play")
             button.btn.btn-xs.btn-default: +icon("remove-circle")
@@ -87,6 +88,6 @@ h1.page-header MPD
 
     tab(heading="Outputs")
       +table({"": {style: 'width: 1%'}}, "", "Name")
-        tr(ng-repeat="item in outputs")
-          td: button.btn.btn-default.btn-xs(ng-click="item.active = !item.active", ng-class="{'active': item.active}"): +icon("volume-up")
+        tr(ng-repeat="item in outputs", ng-class="{'success': item.enabled}")
+          td: button.btn.btn-default.btn-xs(ng-click="item.enabled = !item.enabled", ng-class="{'active': item.enabled}"): +icon("volume-up")
           td {{item.name}}
