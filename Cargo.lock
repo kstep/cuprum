@@ -2,7 +2,7 @@
 name = "ngenti"
 version = "0.0.1"
 dependencies = [
- "mpd 0.0.1 (git+file:///home/kstep/git/rust-mpd/.git)",
+ "mpd 0.0.1 (git+https://github.com/kstep/rust-mpd.git)",
  "scgi 0.0.1 (git+https://github.com/kstep/rust-scgi.git)",
 ]
 
@@ -14,7 +14,7 @@ source = "git+https://github.com/alexcrichton/gcc-rs#3caf7309ef72644cd56a9d3a6f5
 [[package]]
 name = "mpd"
 version = "0.0.1"
-source = "git+file:///home/kstep/git/rust-mpd/.git#d0d4dca6ca0d4e362374fc4ad6aebd79da201ce4"
+source = "git+https://github.com/kstep/rust-mpd.git#d0d4dca6ca0d4e362374fc4ad6aebd79da201ce4"
 dependencies = [
  "time 0.1.1 (git+https://github.com/rust-lang/time.git)",
 ]
@@ -22,7 +22,7 @@ dependencies = [
 [[package]]
 name = "scgi"
 version = "0.0.1"
-source = "git+https://github.com/kstep/rust-scgi.git#6cebd2de9d7b0fd821f0dbdd71955bdd4b39cbb2"
+source = "git+https://github.com/kstep/rust-scgi.git#5c3564aeb7b6ddf5b48a416a04eed5ac72559242"
 dependencies = [
  "url 0.2.2 (git+https://github.com/servo/rust-url.git)",
 ]
