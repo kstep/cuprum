@@ -5,7 +5,7 @@ angular.module 'ngenti', ['ng', 'ngRoute', 'ngenti.plugins.mpd']
             else
                 v
 
-        (value) -> "#{Math.floor(value / 60)}:#{d2(value % 60)}"
+        (value) -> "#{Math.floor(value / 60)}:#{d2(Math.floor(value % 60))}"
     ]
     .controller 'NavigationController', ['$scope', '$location', ($scope, $location) ->
         $scope.$location = $location

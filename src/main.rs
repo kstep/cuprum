@@ -35,6 +35,7 @@ fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
                     "mpd" => match parts[2][] {
                         "queue.json" => json_result(s, json::encode(&mpc.queue().songs())),
                         "status.json" => json_result(s, json::encode(&mpc.status())),
+                        "current-song.json" => json_result(s, json::encode(&mpc.current_song())),
                         _ => not_found(s)
                     },
                     _ => not_found(s)

@@ -14,10 +14,14 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource']
     .factory 'Stats', ['$resource', ($resource) ->
         $resource '/plugins/mpd/stats.json'
     ]
+    .factory 'CurrentSong', ['$resource', ($resource) ->
+        $resource '/plugins/mpd/current-song.json'
+    ]
 
-    .controller 'MPDController', ['$scope', 'Queue', 'Status', ($scope, Queue, Status) ->
+    .controller 'MPDController', ['$scope', 'Queue', 'Status', 'CurrentSong', ($scope, Queue, Status, CurrentSong) ->
         $scope.queue = Queue.query()
         $scope.status = Status.get()
+        # $scope.current_song = CurrentSong.get()
 
         $scope.playlists = [
             {name: 'Колыбельные'}
