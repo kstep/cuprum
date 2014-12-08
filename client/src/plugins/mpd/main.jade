@@ -25,7 +25,7 @@ h1.page-header MPD
 
   .col-sm-4
     output.col-sm-3.text-right(style="display: inline-block; white-space: nowrap;", for="position") {{status.elapsed_time / 1000 | time}} / {{status.total_time / 1000 | time}}
-    .col-sm-7: input#position.inline.input-sm(ng-model="status.elapsed_time", type="range", max="303000", min="0", step="1000", title="Position")
+    .col-sm-7: input#position.inline.input-sm(type="range", ng-model="status.progress", max="1000", min="0", step="10", title="Position")
     button.btn.btn-default.btn-sm(title="Refresh"): +icon("refresh")
 
   .col-sm-2.pull-right.btn-group
