@@ -31,15 +31,15 @@ fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
     match env.path("DOCUMENT_URI") {
         None => not_found(s),
         Some(path) => {
-            let parts : Vec<String> = path.components().map(|v| String::from_utf8_lossy(v).to_string()).collect();
-            match parts[0][] {
-                "plugins" => match parts[1][] {
-                    "mpd" => match parts[2][] {
-                        "queue.json" => json_result(s, json::encode(&mpc.queue().songs())),
-                        "status.json" => json_result(s, json::encode(&mpc.status())),
-                        "current-song.json" => json_result(s, json::encode(&mpc.current_song())),
-                        "outputs.json" => json_result(s, json::encode(&mpc.outputs())),
-                        "playlists.json" => json_result(s, json::encode(&mpc.playlists())),
+            let mut parts = path.components();
+            match parts.next() {
+                Some(b"plugins") => match parts.next() {
+                    Some(b"mpd") => match parts.next() {
+                        Some(b"queue.json") => json_result(s, json::encode(&mpc.queue().songs())),
+                        Some(b"status.json") => json_result(s, json::encode(&mpc.status())),
+                        Some(b"current-song.json") => json_result(s, json::encode(&mpc.current_song())),
+                        Some(b"outputs.json") => json_result(s, json::encode(&mpc.outputs())),
+                        Some(b"playlists.json") => json_result(s, json::encode(&mpc.playlists())),
                         _ => not_found(s)
                     },
                     _ => not_found(s)
