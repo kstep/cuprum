@@ -1,18 +1,23 @@
-angular.module 'ngenti.plugins.mpd', ['ui.bootstrap']
+angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource']
     .config ['$routeProvider', ($route) ->
         $route.when '/mpd',
             templateUrl: 'plugins/mpd/main.html',
             controller: 'MPDController'
     ]
 
-    .controller 'MPDController', ['$scope', ($scope) ->
-        $scope.tracks = [
-            {artist: 'Rockabye Baby!', title: 'Knockin\' on Heaven\'s Door', genre: 'Lullaby', time: 2*60+59}
-            {artist: 'Rockabye Baby!', title: 'We Are Champions', genre: 'Ambient', time: 2*60+53}
-            {artist: 'Michael Armstrong', title: 'No Woman No Cry', genre: 'Lullaby', time: 5*60+41}
-            {artist: 'Мельница', title: 'Королевна', genre: 'Folk', time: 14*60+29}
-        ]
-        $scope.status = { song: 1 }
+    .factory 'Queue', ['$resource', ($resource) ->
+        $resource '/plugins/mpd/queue.json'
+    ]
+    .factory 'Status', ['$resource', ($resource) ->
+        $resource '/plugins/mpd/status.json'
+    ]
+    .factory 'Stats', ['$resource', ($resource) ->
+        $resource '/plugins/mpd/stats.json'
+    ]
+
+    .controller 'MPDController', ['$scope', 'Queue', 'Status', ($scope, Queue, Status) ->
+        $scope.queue = Queue.query()
+        $scope.status = Status.get()
 
         $scope.playlists = [
             {name: 'Колыбельные'}

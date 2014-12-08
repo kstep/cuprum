@@ -6,3 +6,6 @@ authors = ["Konstantin Stepanov <me@kstep.me>"]
 
 [dependencies.scgi]
 git = "https://github.com/kstep/rust-scgi.git"
+
+[dependencies.mpd]
+git = "file:///home/kstep/git/rust-mpd/.git"

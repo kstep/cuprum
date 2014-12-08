@@ -44,7 +44,7 @@ h1.page-header MPD
   tabset
     tab(heading="Now Playing")
       +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 1%'}}, "Artist", "Title", "Genre", "Time", "Actions")
-        tr(ng-repeat="item in tracks", ng-class="{'active': $index == status.song}")
+        tr(ng-repeat="item in queue", ng-class="{'active': $index == status.song}")
           td {{item.artist}}
           td {{item.title}}
           td {{item.genre}}
