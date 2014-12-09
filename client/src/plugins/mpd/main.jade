@@ -26,7 +26,7 @@ h1.page-header MPD
   .col-sm-4
     output.col-sm-3.text-right(style="display: inline-block; white-space: nowrap;", for="position") {{player.elapsed_time / 1000 | time}} / {{player.total_time / 1000 | time}}
     .col-sm-7: input#position.inline.input-sm(type="range", ng-model="player.progress" ng-change="player.$seek({'elapsed_time':floor(player.progress/1000*player.total_time)})", min="0", max="1000", step="10", title="Position")
-    button.btn.btn-default.btn-sm(title="Refresh"): +icon("refresh")
+    button.btn.btn-default.btn-sm(title="Refresh", ng-click="player.$get()"): +icon("refresh")
 
   .col-sm-2.pull-right.btn-group
     button.btn.btn-default.btn-sm(title="Previous track", ng-click="player.$prev()"): +icon("step-backward")

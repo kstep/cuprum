@@ -34,7 +34,7 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
     ]
 
     .controller 'MPDController', ['$scope', 'Queue', 'CurrentSong', 'Outputs', 'Playlists', 'Player', '$window', ($scope, Queue, CurrentSong, Outputs, Playlists, Player, $window) ->
-        $scope.$watch 'player.elapsed_time / player.total_time', (v) -> $scope.player.progress = v * 1000
+        $scope.$watch 'player.elapsed_time / player.total_time', (v) -> $scope.player.progress = v * 1000 if v
 
         $scope.queue = Queue.query()
         $scope.player = Player.get()
