@@ -18,10 +18,10 @@ mixin progress
 h1.page-header MPD
 .row
   .btn-group.col-sm-2
-    button.btn.btn-default.btn-sm(title="Repeat", ng-click="player.repeat = !player.repeat", ng-class="{'active':player.repeat}"): +icon("repeat")
-    button.btn.btn-default.btn-sm(title="Random", ng-click="player.random = !player.random", ng-class="{'active':player.random}"): +icon("random")
-    button.btn.btn-default.btn-sm(title="Single", ng-click="player.single = !player.single", ng-class="{'active':player.single}"): +icon("pushpin")
-    button.btn.btn-default.btn-sm(title="Consume", ng-click="player.consume = !player.consume", ng-class="{'active':player.consume}"): +icon("eject")
+    button.btn.btn-default.btn-sm(title="Repeat", ng-click="player.$set({'repeat':!player.repeat})", ng-class="{'active':player.repeat}"): +icon("repeat")
+    button.btn.btn-default.btn-sm(title="Random", ng-click="player.$set({'random':!player.random})", ng-class="{'active':player.random}"): +icon("random")
+    button.btn.btn-default.btn-sm(title="Single", ng-click="player.$set({'single':!player.single})", ng-class="{'active':player.single}"): +icon("pushpin")
+    button.btn.btn-default.btn-sm(title="Consume", ng-click="player.$set({'consume':!player.consume})", ng-class="{'active':player.consume}"): +icon("eject")
 
   .col-sm-4
     output.col-sm-3.text-right(style="display: inline-block; white-space: nowrap;", for="position") {{player.elapsed_time / 1000 | time}} / {{player.total_time / 1000 | time}}

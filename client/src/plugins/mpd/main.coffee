@@ -31,6 +31,7 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
             next: { method: 'GET', params: {cmd: 'next'} }
             prev: { method: 'GET', params: {cmd: 'prev'} }
             seek: { method: 'GET', params: {cmd: 'seek'} }
+            set: { method: 'GET', params: {cmd: 'set'} }
     ]
 
     .controller 'MPDController', ['$scope', 'Queue', 'CurrentSong', 'Outputs', 'Playlists', 'Player', '$window', ($scope, Queue, CurrentSong, Outputs, Playlists, Player, $window) ->

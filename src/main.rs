@@ -49,6 +49,21 @@ fn run_player(s: &mut Stream, qs: TreeMap<String, String>, mpc: &mut MpdConnecti
                                                  .and_then(|v| from_str(v[]))
                                                  .map(|v| Duration::milliseconds(v))
                                                  .unwrap_or(Duration::zero()))),
+                "set" => {
+                    if let Some(repeat) = qs.get(&"repeat".into_string()).and_then(|v| from_str(v[])) {
+                        mpc.set_repeat(repeat);
+                    }
+                    if let Some(single) = qs.get(&"single".into_string()).and_then(|v| from_str(v[])) {
+                        mpc.set_single(single);
+                    }
+                    if let Some(random) = qs.get(&"random".into_string()).and_then(|v| from_str(v[])) {
+                        mpc.set_random(random);
+                    }
+                    if let Some(consume) = qs.get(&"consume".into_string()).and_then(|v| from_str(v[])) {
+                        mpc.set_consume(consume);
+                    }
+                    Ok(())
+                },
                 _ => Ok(())
             };
         }
