@@ -24,7 +24,7 @@ h1.page-header MPD
     button.btn.btn-default.btn-sm(title="Consume", ng-click="player.$set({'consume':!player.consume})", ng-class="{'active':player.consume}"): +icon("eject")
 
   .col-sm-4
-    output.col-sm-3.text-right(style="display: inline-block; white-space: nowrap;", for="position") {{player.elapsed_time / 1000 | time}} / {{player.total_time / 1000 | time}}
+    output.col-sm-2.text-right.text-nowrap(style="display: inline-block", for="position") {{player.elapsed_time / 1000 | time}} / {{player.total_time / 1000 | time}}
     .col-sm-7: input#position.inline.input-sm(type="range", ng-model="player.progress" ng-change="player.$set({'elapsed_time':floor(player.progress/1000*player.total_time)})", min="0", max="1000", step="10", title="Position")
     button.btn.btn-default.btn-sm(title="Refresh", ng-click="player.$get()"): +icon("refresh")
 
@@ -36,8 +36,9 @@ h1.page-header MPD
     button.btn.btn-default.btn-sm(title="Next track", ng-click="player.$next()"): +icon("step-forward")
 
   .col-sm-2.pull-right
-    .col-sm-1.btn(disabled): +icon("{{volume_icon(player.volume)}}")
-    output.col-sm-1(style="display: inline-block", for="volume") {{player.volume}}%
+    output.col-sm-4.text-nowrap(style="display: inline-block", for="volume")
+      .col-sm-1: +icon("{{volume_icon(player.volume)}}")
+      {{player.volume}}%
     .col-sm-7: input#volume.inline.input-sm(ng-model="player.volume", ng-change="player.$set({'volume':player.volume})", type="range", max="100", min="0", step="1", title="Volume")
 
 .row
