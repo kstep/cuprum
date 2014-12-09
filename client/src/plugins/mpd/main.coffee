@@ -1,4 +1,4 @@
-angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource']
+angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
     .config ['$routeProvider', ($route) ->
         $route.when '/mpd',
             templateUrl: 'plugins/mpd/main.html',
@@ -6,10 +6,9 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource']
     ]
 
     .factory 'Queue', ['$resource', ($resource) ->
-        $resource '/plugins/mpd/queue.json'
-    ]
-    .factory 'Status', ['$resource', ($resource) ->
-        $resource '/plugins/mpd/status.json'
+        $resource '/plugins/mpd/queue.json', {},
+            query: { method: 'GET', isArray: true },
+            remove: { method: 'DELETE', params: {id: '@id'} }
     ]
     .factory 'Stats', ['$resource', ($resource) ->
         $resource '/plugins/mpd/stats.json'
@@ -23,17 +22,25 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource']
     .factory 'Playlists', ['$resource', ($resource) ->
         $resource '/plugins/mpd/playlists.json'
     ]
+    .factory 'Player', ['$resource', ($resource) ->
+        $resource '/plugins/mpd/player.json', {},
+            get: { method: 'GET' },
+            play: { method: 'GET',  params: {cmd: 'play'} }
+            stop: { method: 'GET',  params: {cmd: 'stop'} }
+            pause: { method: 'GET', params: {cmd: 'pause'} }
+            next: { method: 'GET', params: {cmd: 'next'} }
+            prev: { method: 'GET', params: {cmd: 'prev'} }
+            seek: { method: 'GET', params: {cmd: 'seek'} }
+    ]
 
-    .controller 'MPDController', ['$scope', 'Queue', 'Status', 'CurrentSong', 'Outputs', 'Playlists', ($scope, Queue, Status, CurrentSong, Outputs, Playlists) ->
+    .controller 'MPDController', ['$scope', 'Queue', 'CurrentSong', 'Outputs', 'Playlists', 'Player', '$window', ($scope, Queue, CurrentSong, Outputs, Playlists, Player, $window) ->
+        $scope.$watch 'player.elapsed_time / player.total_time', (v) -> $scope.player.progress = v * 1000
+
         $scope.queue = Queue.query()
-        $scope.status = Status.get((status) ->
-            status.progress = status.elapsed_time * 1000 / status.total_time
-        )
+        $scope.player = Player.get()
         # $scope.current_song = CurrentSong.get()
         $scope.playlists = Playlists.query()
         $scope.outputs = Outputs.query()
-
-        $scope.$watch 'status.progress', (v) -> $scope.status.elapsed_time = $scope.status.total_time * (v / 1000)
 
         $scope.library = [
             {artist: 'Alicia Keys', title: 'A Harlem Love Story (Fallin\' / A Woman\'s Worth)', genre: 'R&B/Soul', time: 10*60+4}

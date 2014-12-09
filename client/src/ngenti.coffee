@@ -17,4 +17,7 @@ angular.module 'ngenti', ['ng', 'ngRoute', 'ngenti.plugins.mpd']
             {module: 'ngenti.plugins.dnsmasq', icon: 'globe', route: '/dnsmasq', name: 'Dnsmasq', title: 'Dnsmasq DNS Server'}
         ]
     ]
-    .controller 'ContentController', ['$scope', ($scope) -> {}]
+    .controller 'ContentController', ['$scope', ($scope) ->
+        $scope.floor = Math.floor
+        $scope.ceil = Math.ceil
+    ]

@@ -8,13 +8,13 @@ dependencies = [
 
 [[package]]
 name = "gcc"
-version = "0.1.0"
-source = "git+https://github.com/alexcrichton/gcc-rs#3caf7309ef72644cd56a9d3a6f515ae553683176"
+version = "0.1.1"
+source = "git+https://github.com/alexcrichton/gcc-rs#d35c34c871dd75f97fadf04cb0ed85d997a9bc0c"
 
 [[package]]
 name = "mpd"
 version = "0.0.1"
-source = "git+https://github.com/kstep/rust-mpd.git#d0d4dca6ca0d4e362374fc4ad6aebd79da201ce4"
+source = "git+https://github.com/kstep/rust-mpd.git#021fbcb15ead0577afa9fd990e79b857a6f51464"
 dependencies = [
  "time 0.1.1 (git+https://github.com/rust-lang/time.git)",
 ]
@@ -32,7 +32,7 @@ name = "time"
 version = "0.1.1"
 source = "git+https://github.com/rust-lang/time.git#c1c02adb74c6d9424541ae88ceb61de698b10eeb"
 dependencies = [
- "gcc 0.1.0 (git+https://github.com/alexcrichton/gcc-rs)",
+ "gcc 0.1.1 (git+https://github.com/alexcrichton/gcc-rs)",
 ]
 
 [[package]]

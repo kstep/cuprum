@@ -18,41 +18,41 @@ mixin progress
 h1.page-header MPD
 .row
   .btn-group.col-sm-2
-    button.btn.btn-default.btn-sm(title="Repeat", ng-click="status.repeat = !status.repeat", ng-class="{'active':status.repeat}"): +icon("repeat")
-    button.btn.btn-default.btn-sm(title="Random", ng-click="status.random = !status.random", ng-class="{'active':status.random}"): +icon("random")
-    button.btn.btn-default.btn-sm(title="Single", ng-click="status.single = !status.single", ng-class="{'active':status.single}"): +icon("pushpin")
-    button.btn.btn-default.btn-sm(title="Consume", ng-click="status.consume = !status.consume", ng-class="{'active':status.consume}"): +icon("eject")
+    button.btn.btn-default.btn-sm(title="Repeat", ng-click="player.repeat = !player.repeat", ng-class="{'active':player.repeat}"): +icon("repeat")
+    button.btn.btn-default.btn-sm(title="Random", ng-click="player.random = !player.random", ng-class="{'active':player.random}"): +icon("random")
+    button.btn.btn-default.btn-sm(title="Single", ng-click="player.single = !player.single", ng-class="{'active':player.single}"): +icon("pushpin")
+    button.btn.btn-default.btn-sm(title="Consume", ng-click="player.consume = !player.consume", ng-class="{'active':player.consume}"): +icon("eject")
 
   .col-sm-4
-    output.col-sm-3.text-right(style="display: inline-block; white-space: nowrap;", for="position") {{status.elapsed_time / 1000 | time}} / {{status.total_time / 1000 | time}}
-    .col-sm-7: input#position.inline.input-sm(type="range", ng-model="status.progress", max="1000", min="0", step="10", title="Position")
+    output.col-sm-3.text-right(style="display: inline-block; white-space: nowrap;", for="position") {{player.elapsed_time / 1000 | time}} / {{player.total_time / 1000 | time}}
+    .col-sm-7: input#position.inline.input-sm(type="range", ng-model="player.progress" ng-change="player.$seek({'elapsed_time':floor(player.progress/1000*player.total_time)})", min="0", max="1000", step="10", title="Position")
     button.btn.btn-default.btn-sm(title="Refresh"): +icon("refresh")
 
   .col-sm-2.pull-right.btn-group
-    button.btn.btn-default.btn-sm(title="Previous track", ng-click="mpd.prev()"): +icon("step-backward")
-    button.btn.btn-default.btn-sm(title="Play", ng-show="status.state != 'Play'", ng-click="mpd.play()"): +icon("play")
-    button.btn.btn-default.btn-sm(title="Pause", ng-show="status.state == 'Play'", ng-click="mpd.pause()"): +icon("pause")
-    button.btn.btn-default.btn-sm(title="Stop", ng-click="mpd.stop()"): +icon("stop")
-    button.btn.btn-default.btn-sm(title="Next track", ng-click="mpd.next()"): +icon("step-forward")
+    button.btn.btn-default.btn-sm(title="Previous track", ng-click="player.$prev()"): +icon("step-backward")
+    button.btn.btn-default.btn-sm(title="Play", ng-show="player.state != 'Play'", ng-click="player.$play()"): +icon("play")
+    button.btn.btn-default.btn-sm(title="Pause", ng-show="player.state == 'Play'", ng-click="player.$pause()"): +icon("pause")
+    button.btn.btn-default.btn-sm(title="Stop", ng-click="player.$stop()"): +icon("stop")
+    button.btn.btn-default.btn-sm(title="Next track", ng-click="player.$next()"): +icon("step-forward")
 
   .col-sm-2.pull-right
-    button.btn.btn-default.btn-sm(title="Mute", ng-class="{'active': status.muted}" ng-click="status.muted = !status.muted"): +icon("volume-off")
-    output.col-sm-1(style="display: inline-block", for="volume") {{status.volume}}%
-    .col-sm-7: input#volume.inline.input-sm(ng-model="status.volume", type="range", max="100", min="0", step="1", title="Volume")
+    button.btn.btn-default.btn-sm(title="Mute", ng-class="{'active': player.muted}" ng-click="player.muted = !player.muted"): +icon("volume-off")
+    output.col-sm-1(style="display: inline-block", for="volume") {{player.volume}}%
+    .col-sm-7: input#volume.inline.input-sm(ng-model="player.volume", type="range", max="100", min="0", step="1", title="Volume")
 
 .row
   br
   tabset
     tab(heading="Now Playing")
       +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 1%'}}, "Artist", "Title", "Genre", "Time", "Actions")
-        tr(ng-repeat="item in queue", ng-class="{'success': item.id == status.song[0]}")
+        tr(ng-repeat="item in queue", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="item.$remove()")
           td {{item.tags.Artist}}
           td {{item.tags.Title}}
           td {{item.tags.Genre}}
           td(style="text-align: right;") {{item.duration / 1000 | time}}
           td.actions: .btn-group
-            button.btn.btn-xs.btn-default: +icon("play")
-            button.btn.btn-xs.btn-default: +icon("remove-circle")
+            button.btn.btn-xs.btn-default(ng-click="player.$play({'id':item.id})"): +icon("play")
+            button.btn.btn-xs.btn-default(ng-click="item.$remove()"): +icon("remove-circle")
 
     tab(heading="Playlists")
       +table({"Actions":{style: 'width: 1%'}}, "Name", "Actions")
