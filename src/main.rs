@@ -35,12 +35,6 @@ fn run_player(s: &mut Stream, qs: TreeMap<String, String>, mpc: &mut MpdConnecti
     s.write_str("\r\n")).and_then(|()| {
         if let Some(cmd) = qs.get(&"cmd".into_string()) {
             match cmd[] {
-                "play" => match qs.get(&"id".into_string()).and_then(|v| from_str(v[])) {
-                    Some(id) => mpc.play_id(id),
-                    None => mpc.play()
-                },
-                "stop" => mpc.stop(),
-                "pause" => mpc.pause(true),
                 "next" => mpc.next(),
                 "prev" => mpc.prev(),
                 "set" => {
