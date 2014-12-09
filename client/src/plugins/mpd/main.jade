@@ -45,7 +45,7 @@ h1.page-header MPD
   tabset
     tab(heading="Now Playing")
       +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 6%'}}, "Artist", "Title", "Genre", "Time", "Actions")
-        tr(ng-repeat="item in queue", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="item.$remove()")
+        tr(ng-repeat="item in queue | filter:hasField('id')", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="item.$remove()")
           td {{item.tags.Artist}}
           td {{item.tags.Title}}
           td {{item.tags.Genre}}

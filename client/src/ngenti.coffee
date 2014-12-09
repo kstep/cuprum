@@ -20,4 +20,6 @@ angular.module 'ngenti', ['ng', 'ngRoute', 'ngenti.plugins.mpd']
     .controller 'ContentController', ['$scope', ($scope) ->
         $scope.floor = Math.floor
         $scope.ceil = Math.ceil
+        $scope.hasField = (field) -> (item) -> !!item[field]
+
     ]
