@@ -44,23 +44,23 @@ h1.page-header MPD
   br
   tabset
     tab(heading="Now Playing")
-      +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 1%'}}, "Artist", "Title", "Genre", "Time", "Actions")
+      +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 6%'}}, "Artist", "Title", "Genre", "Time", "Actions")
         tr(ng-repeat="item in queue", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="item.$remove()")
           td {{item.tags.Artist}}
           td {{item.tags.Title}}
           td {{item.tags.Genre}}
           td(style="text-align: right;") {{item.duration / 1000 | time}}
           td.actions: .btn-group
-            button.btn.btn-xs.btn-default(ng-click="player.$play({'id':item.id})"): +icon("play")
-            button.btn.btn-xs.btn-default(ng-click="item.$remove()"): +icon("remove-circle")
+            button.btn.btn-sm.btn-default(ng-click="player.$play({'id':item.id})"): +icon("play")
+            button.btn.btn-sm.btn-default(ng-click="item.$remove()"): +icon("remove-circle")
 
     tab(heading="Playlists")
-      +table({"Actions":{style: 'width: 1%'}}, "Name", "Actions")
+      +table({"Actions":{style: 'width: 6%'}}, "Name", "Actions")
         tr(ng-repeat="item in playlists")
           td {{item.path}}
           td.actions: .btn-group
-            button.btn.btn-xs.btn-default: +icon("play")
-            button.btn.btn-xs.btn-default: +icon("remove-circle")
+            button.btn.btn-sm.btn-default: +icon("play")
+            button.btn.btn-sm.btn-default: +icon("remove-circle")
 
     tab(heading="Library")
       table.table
@@ -84,10 +84,10 @@ h1.page-header MPD
             td {{item.genre}}
             td {{item.time | time}}
             td.actions
-              button.btn.btn-default.btn-xs: +icon("play")
+              button.btn.btn-default.btn-sm: +icon("play")
 
     tab(heading="Outputs")
       +table({"": {style: 'width: 1%'}}, "", "Name")
         tr(ng-repeat="item in outputs", ng-class="{'success': item.enabled}")
-          td: button.btn.btn-default.btn-xs(ng-click="item.enabled = !item.enabled", ng-class="{'active': item.enabled}"): +icon("volume-up")
+          td: button.btn.btn-default.btn-sm(ng-click="item.enabled = !item.enabled", ng-class="{'active': item.enabled}"): +icon("volume-up")
           td {{item.name}}
