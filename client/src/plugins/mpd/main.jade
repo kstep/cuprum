@@ -51,7 +51,7 @@ h1.page-header MPD
           td {{item.tags.Genre}}
           td(style="text-align: right;") {{item.duration / 1000 | time}}
           td.actions: .btn-group
-            button.btn.btn-sm.btn-default(ng-click="player.$play({'id':item.id})"): +icon("play")
+            button.btn.btn-sm.btn-default(ng-click="player.$set({'state':'Play','id':item.id})"): +icon("play")
             button.btn.btn-sm.btn-default(ng-click="item.$remove()"): +icon("remove-circle")
 
     tab(heading="Playlists")
