@@ -15,6 +15,13 @@ mixin table(attrs, ...titles)
 mixin progress
   progressbar&attributes(attributes) {{attributes.value}}
 
+script(id="confirm-song-remove.html", type="text/ng-template")
+  .modal-header: h3.modal-title Remove “{{song.tags.Title}}” from the queue?
+  .modal-body Are you sure you want to remove the “<b>{{song.tags.Title}}</b>” song by <b>{{song.tags.Artist}}</b> from the play queue?
+  .modal-footer
+    button.btn.btn-primary(ng-click="yes()") Yes
+    button.btn.btn-default(ng-click="no()") No
+
 h1.page-header MPD
 .row
   .btn-group.col-sm-2
@@ -46,14 +53,14 @@ h1.page-header MPD
   tabset
     tab(heading="Now Playing")
       +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 6%'}}, "Artist", "Title", "Genre", "Time", "Actions")
-        tr(ng-repeat="item in queue | filter:hasField('id')", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="item.$remove()")
+        tr(ng-repeat="item in queue | filter:hasField('id')", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="remove(item)")
           td {{item.tags.Artist}}
           td {{item.tags.Title}}
           td {{item.tags.Genre}}
           td(style="text-align: right;") {{item.duration / 1000 | time}}
           td.actions: .btn-group
             button.btn.btn-sm.btn-default(ng-click="player.$set({'state':'Play','id':item.id})"): +icon("play")
-            button.btn.btn-sm.btn-default(ng-click="item.$remove()"): +icon("remove-circle")
+            button.btn.btn-sm.btn-default(ng-click="remove(item)"): +icon("remove-circle")
 
     tab(heading="Playlists")
       +table({"Actions":{style: 'width: 6%'}}, "Name", "Actions")

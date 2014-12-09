@@ -30,7 +30,7 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
             set: { method: 'GET', params: {cmd: 'set'} }
     ]
 
-    .controller 'MPDController', ['$scope', 'Queue', 'CurrentSong', 'Outputs', 'Playlists', 'Player', '$window', ($scope, Queue, CurrentSong, Outputs, Playlists, Player, $window) ->
+    .controller 'MPDController', ['$scope', 'Queue', 'CurrentSong', 'Outputs', 'Playlists', 'Player', '$modal', ($scope, Queue, CurrentSong, Outputs, Playlists, Player, $modal) ->
         $scope.$watch 'player.elapsed_time / player.total_time', (v) -> $scope.player.progress = v * 1000 if v
 
         $scope.queue = Queue.query()
@@ -40,6 +40,17 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
         $scope.outputs = Outputs.query()
 
         $scope.volume_icon = (v) -> if v == 0 then "volume-off" else if v <= 50 then "volume-down" else "volume-up"
+
+        $scope.remove = (song) ->
+            $modal.open
+                templateUrl: 'confirm-song-remove.html'
+                keyboard: true
+                controller: ['$scope', '$modalInstance', ($scope, $modal) ->
+                    $scope.song = song
+                    $scope.yes = -> $modal.close song
+                    $scope.no = -> $modal.dismiss 'cancel'
+                ]
+            .result.then (song) -> song.$remove()
 
         $scope.library = [
             {artist: 'Alicia Keys', title: 'A Harlem Love Story (Fallin\' / A Woman\'s Worth)', genre: 'R&B/Soul', time: 10*60+4}
