@@ -36,7 +36,7 @@ h1.page-header MPD
     button.btn.btn-default.btn-sm(title="Next track", ng-click="player.$next()"): +icon("step-forward")
 
   .col-sm-2.pull-right
-    button.btn.btn-default.btn-sm(title="Mute", ng-class="{'active': player.muted}" ng-click="player.muted = !player.muted"): +icon("volume-off")
+    .col-sm-1.btn(disabled): +icon("{{volume_icon(player.volume)}}")
     output.col-sm-1(style="display: inline-block", for="volume") {{player.volume}}%
     .col-sm-7: input#volume.inline.input-sm(ng-model="player.volume", ng-change="player.$set({'volume':player.volume})", type="range", max="100", min="0", step="1", title="Volume")
 

@@ -39,6 +39,8 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
         $scope.playlists = Playlists.query()
         $scope.outputs = Outputs.query()
 
+        $scope.volume_icon = (v) -> if v == 0 then "volume-off" else if v <= 50 then "volume-down" else "volume-up"
+
         $scope.library = [
             {artist: 'Alicia Keys', title: 'A Harlem Love Story (Fallin\' / A Woman\'s Worth)', genre: 'R&B/Soul', time: 10*60+4}
             {artist: 'Alicia Keys', title: 'Never Felt This Way (Interlude)', genre: 'Rock', time: 2*60+4}
