@@ -25,12 +25,8 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
     .factory 'Player', ['$resource', ($resource) ->
         $resource '/plugins/mpd/player.json', {},
             get: { method: 'GET' },
-            play: { method: 'GET',  params: {cmd: 'play'} }
-            stop: { method: 'GET',  params: {cmd: 'stop'} }
-            pause: { method: 'GET', params: {cmd: 'pause'} }
             next: { method: 'GET', params: {cmd: 'next'} }
             prev: { method: 'GET', params: {cmd: 'prev'} }
-            seek: { method: 'GET', params: {cmd: 'seek'} }
             set: { method: 'GET', params: {cmd: 'set'} }
     ]
 

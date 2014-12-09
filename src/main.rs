@@ -43,12 +43,6 @@ fn run_player(s: &mut Stream, qs: TreeMap<String, String>, mpc: &mut MpdConnecti
                 "pause" => mpc.pause(true),
                 "next" => mpc.next(),
                 "prev" => mpc.prev(),
-                "seek" => mpc.current_song()
-                    .and_then(|ref mut s| s.seek(mpc,
-                                                 qs.get(&"elapsed_time".into_string())
-                                                 .and_then(|v| from_str(v[]))
-                                                 .map(|v| Duration::milliseconds(v))
-                                                 .unwrap_or(Duration::zero()))),
                 "set" => {
                     if let Some(repeat) = qs.get(&"repeat".into_string()).and_then(|v| from_str(v[])) {
                         mpc.set_repeat(repeat);
@@ -61,6 +55,20 @@ fn run_player(s: &mut Stream, qs: TreeMap<String, String>, mpc: &mut MpdConnecti
                     }
                     if let Some(consume) = qs.get(&"consume".into_string()).and_then(|v| from_str(v[])) {
                         mpc.set_consume(consume);
+                    }
+                    if let Some(volume) = qs.get(&"volume".into_string()).and_then(|v| from_str(v[])) {
+                        mpc.set_volume(volume);
+                    }
+                    if let Some(elapsed_time) = qs.get(&"elapsed_time".into_string()).and_then(|v| from_str(v[])).map(|v| Duration::milliseconds(v)) {
+                        mpc.current_song().and_then(|ref mut s| s.seek(mpc, elapsed_time));
+                    }
+                    if let Some(state) = qs.get(&"state".into_string()) {
+                        match state[] {
+                            "Play" => mpc.play(),
+                            "Pause" => mpc.pause(true),
+                            "Stop" => mpc.stop(),
+                            _ => Ok(())
+                        };
                     }
                     Ok(())
                 },
