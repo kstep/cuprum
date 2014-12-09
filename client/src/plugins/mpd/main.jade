@@ -97,5 +97,5 @@ h1.page-header MPD
     tab(heading="Outputs")
       +table({"": {style: 'width: 1%'}}, "", "Name")
         tr(ng-repeat="item in outputs", ng-class="{'success': item.enabled}")
-          td: button.btn.btn-default.btn-sm(ng-click="item.enabled = !item.enabled", ng-class="{'active': item.enabled}"): +icon("volume-up")
+          td: button.btn.btn-default.btn-sm(ng-click="item.$set({'enabled':!item.enabled})", ng-class="{'active': item.enabled}"): +icon("volume-up")
           td {{item.name}}

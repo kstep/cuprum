@@ -17,7 +17,9 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
         $resource '/plugins/mpd/current-song.json'
     ]
     .factory 'Outputs', ['$resource', ($resource) ->
-        $resource '/plugins/mpd/outputs.json'
+        $resource '/plugins/mpd/outputs.json', {},
+            query: { method: 'GET', isArray: true },
+            set: { method: 'GET', params: {cmd: 'set', id: '@id'} }
     ]
     .factory 'Playlists', ['$resource', ($resource) ->
         $resource '/plugins/mpd/playlists.json'

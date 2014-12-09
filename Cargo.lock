@@ -14,7 +14,7 @@ source = "git+https://github.com/alexcrichton/gcc-rs#d35c34c871dd75f97fadf04cb0e
 [[package]]
 name = "mpd"
 version = "0.0.1"
-source = "git+https://github.com/kstep/rust-mpd.git#f59a8574a2760e40aea23b77a01773e1e60b1e05"
+source = "git+https://github.com/kstep/rust-mpd.git#58561e1b8cb926e68c167b9319f351fb8a498bd3"
 dependencies = [
  "time 0.1.1 (git+https://github.com/rust-lang/time.git)",
 ]
