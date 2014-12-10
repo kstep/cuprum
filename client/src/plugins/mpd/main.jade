@@ -75,7 +75,7 @@ h1.page-header MPD
         tr(ng-repeat="item in playlists")
           td {{item.path}}
           td.actions: .btn-group
-            button.btn.btn-sm.btn-default: +icon("play")
+            button.btn.btn-sm.btn-default(ng-click="load(item.path)": +icon("play")
             button.btn.btn-sm.btn-default: +icon("remove-circle")
 
     tab(heading="Library")

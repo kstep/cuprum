@@ -7,7 +7,9 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
 
     .factory 'Queue', ['$resource', ($resource) ->
         $resource '/plugins/mpd/queue.json', {},
-            query: { method: 'GET', isArray: true },
+            query: { method: 'GET', isArray: true }
+            load: { method: 'GET', isArray: true }
+            save: { method: 'GET' }
             remove: { method: 'DELETE', params: {id: '@id'} }
     ]
     .factory 'Stats', ['$resource', ($resource) ->
@@ -53,6 +55,9 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
                     $scope.no = -> $modal.dismiss 'cancel'
                 ]
             .result.then (song) -> song.$remove()
+
+        $scope.load = (playlist) ->
+            $scope.queue = Queue.load { path: playlist.path }
 
         $scope.library = [
             {artist: 'Alicia Keys', title: 'A Harlem Love Story (Fallin\' / A Woman\'s Worth)', genre: 'R&B/Soul', time: 10*60+4}
