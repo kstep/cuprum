@@ -37,9 +37,9 @@ h1.page-header MPD
 
   .col-sm-2.pull-right.btn-group
     button.btn.btn-default.btn-sm(title="Previous track", ng-click="player.$prev()"): +icon("step-backward")
-    button.btn.btn-default.btn-sm(title="Play", ng-show="player.state != 'Play'", ng-click="player.$set({'state':'Play'})"): +icon("play")
-    button.btn.btn-default.btn-sm(title="Pause", ng-show="player.state == 'Play'", ng-click="player.$set({'state':'Pause'})"): +icon("pause")
-    button.btn.btn-default.btn-sm(title="Stop", ng-click="player.$set({'state':'Stop'})"): +icon("stop")
+    button.btn.btn-default.btn-sm(title="Play", ng-show="player.state != 'Play'", ng-click="player.$set({state:'Play'})"): +icon("play")
+    button.btn.btn-default.btn-sm(title="Pause", ng-show="player.state == 'Play'", ng-click="player.$set({state:'Pause'})"): +icon("pause")
+    button.btn.btn-default.btn-sm(title="Stop", ng-click="player.$set({state:'Stop'})"): +icon("stop")
     button.btn.btn-default.btn-sm(title="Next track", ng-click="player.$next()"): +icon("step-forward")
 
   .col-sm-2.pull-right
@@ -53,13 +53,13 @@ h1.page-header MPD
   tabset
     tab(heading="Now Playing")
       +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 6%'}}, "Artist", "Title", "Genre", "Time", "Actions")
-        tr(ng-repeat="item in queue | filter:hasField('id')", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="remove(item)")
+        tr(ng-repeat="item in queue | filter:hasField('id')", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="remove(item)", ng-click="player.$set({state:'Play',id:item.id})", style="cursor: pointer")
           td {{item.tags.Artist}}
           td {{item.tags.Title}}
           td {{item.tags.Genre}}
           td(style="text-align: right;") {{item.duration / 1000 | time}}
           td.actions: .btn-group
-            button.btn.btn-sm.btn-default(ng-click="player.$set({'state':'Play','id':item.id})"): +icon("play")
+            button.btn.btn-sm.btn-default(ng-click="player.$set({state:'Play',id:item.id})"): +icon("play")
             button.btn.btn-sm.btn-default(ng-click="remove(item)"): +icon("remove-circle")
 
     tab(heading="Playlists")
