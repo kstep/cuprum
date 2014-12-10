@@ -1,4 +1,4 @@
-angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
+angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ui.sortable', 'ngResource', 'ngTouch']
     .config ['$routeProvider', ($route) ->
         $route.when '/mpd',
             templateUrl: 'plugins/mpd/main.html',
@@ -53,6 +53,8 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
                     $scope.no = -> $modal.dismiss 'cancel'
                 ]
             .result.then (song) -> song.$remove()
+
+        $scope.alert = (msg, ev) -> console.log(msg, ev)
 
         $scope.library = [
             {artist: 'Alicia Keys', title: 'A Harlem Love Story (Fallin\' / A Woman\'s Worth)', genre: 'R&B/Soul', time: 10*60+4}

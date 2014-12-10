@@ -16,6 +16,8 @@ module.exports = (grunt) ->
             all:
                 dest: 'build/libs.js'
                 cssDest: 'build/libs.css'
+                dependencies:
+                    angularjs: 'jquery'
 
         copy:
             fonts:
