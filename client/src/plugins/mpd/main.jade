@@ -8,6 +8,8 @@ mixin table(attrs, ...titles)
     thead: tr
       each title in titles
         th&attributes(attrs[title]||{})= title
+          +icon("arrow-up")
+          +icon("arrow-down")
 
     tbody
       block
@@ -52,8 +54,14 @@ h1.page-header MPD
   br
   tabset
     tab(heading="Now Playing")
-      +table({"Time":{style: 'width: 5%'}, "Actions":{style: 'width: 6%'}}, "Artist", "Title", "Genre", "Time", "Actions")
-        tr(ng-repeat="item in queue | filter:hasField('id')", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="remove(item)", ng-click="player.$set({state:'Play',id:item.id})", style="cursor: pointer")
+      +table({
+        "Time":{style: "width: 5%", "style": "cursor: pointer", "ng-click": "asc = sort=='duration'? !asc: sort = 'duration'", "ng-class": "{'sorted':sort=='duration', 'sorted-rev':!asc}"},
+        "Genre":{"ng-click": "asc = sort=='tags.Genre'? !asc: sort = 'tags.Genre'", "ng-class": "{'sorted':sort=='tags.Genre', 'sorted-rev':!asc}", "style": "cursor: pointer"},
+        "Title":{"ng-click": "asc = sort=='tags.Title'? !asc: sort = 'tags.Title'", "ng-class": "{'sorted':sort=='tags.Title', 'sorted-rev':!asc}", "style": "cursor: pointer"},
+        "Artist":{"ng-click": "asc = sort=='tags.Artist'? !asc: sort = 'tags.Artist'", "ng-class": "{'sorted':sort=='tags.Artist', 'sorted-rev':!asc}", "style": "cursor: pointer"},
+        "Actions":{style: "width: 6%"}
+        }, "Artist", "Title", "Genre", "Time", "Actions")
+        tr(ng-repeat="item in queue | filter:hasField('id') | orderBy:sort:!asc", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="remove(item)", ng-click="player.$set({state:'Play',id:item.id})", style="cursor: pointer")
           td {{item.tags.Artist}}
           td {{item.tags.Title}}
           td {{item.tags.Genre}}

@@ -157,3 +157,18 @@ body {
 .table tbody > tr > td {
     vertical-align: middle;
 }
+
+table thead {
+  th {
+    span.glyphicon-arrow-up { display: none; }
+    span.glyphicon-arrow-down { display: none; }
+
+    &.sorted {
+      span.glyphicon-arrow-down { display: inline; }
+      &.sorted-rev {
+        span.glyphicon-arrow-down { display: none; }
+        span.glyphicon-arrow-up { display: inline; }
+      }
+    }
+  }
+}
