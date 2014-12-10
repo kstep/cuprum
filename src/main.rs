@@ -101,26 +101,25 @@ fn run_queue(s: &mut Stream, method: String, qs: TreeMap<String, String>, mpc: &
 
 fn run_outputs(s: &mut Stream, qs: Option<TreeMap<String, String>>, mpc: &mut MpdConnection) -> IoResult<()> {
     debug!("params: {}", qs);
-    let mut outputs = mpc.outputs().unwrap();
     if let Some(ref qs) = qs {
-        if let Some(enabled) = qs.get(&"enabled".into_string()).and_then(|v| from_str(v[])) {
-            if let Some(id) = qs.get(&"id".into_string()).and_then(|v| from_str(v[])) {
-                if let Some(Ok(mut output)) = outputs.find(|o| match *o {
-                    Ok(ref v) => v.id() == id,
-                    Err(_) => false
-                }) {
-                    debug!("enabled = {}, id = {}", enabled, id);
-                    if enabled {
-                        output.enable(mpc);
-                    } else {
-                        output.disable(mpc);
-                    }
-                    return json_result(s, json::encode(&output));
-                }
+        if let (Some(enabled), Some(id)) = (
+            qs.get(&"enabled".into_string()).and_then(|v| from_str(v[])),
+            qs.get(&"id".into_string()).and_then(|v| from_str(v[]))) {
+
+            mpc.enable_output_id(id, enabled);
+            let output = mpc.outputs().ok().and_then(|ref mut outs| {
+                outs.find(|out| out.as_ref().map(|out| out.id() == id).unwrap_or(false))
+            });
+
+            match output {
+                Some(Ok(ref o)) => {
+                    return json_result(s, json::encode(o));
+                },
+                _ => ()
             }
         }
     }
-    json_result(s, json::encode(&outputs))
+    json_result(s, json::encode(&mpc.outputs()))
 }
 
 fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
