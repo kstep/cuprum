@@ -88,15 +88,13 @@ fn run_queue(s: &mut Stream, method: String, qs: Option<BTreeMap<String, String>
     s.write_str("Status: 200 OK\r\n").and_then(|_|
     s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|_|
     s.write_str("\r\n")).and_then(|_| {
-        let mut queue = mpc.queue().unwrap();
         match method[] {
             "GET" => {
                 if let Some(ref qs) = qs {
                     if let Some(name) = qs.get("name") {
-                        mpc.load(name[]);
+                        mpc.clear().and_then(|_| mpc.load(name[]));
                     }
                 }
-                s.write_str(json::encode(&queue)[])
             },
             "DELETE" => {
                 if let Some(ref qs) = qs {
@@ -104,11 +102,10 @@ fn run_queue(s: &mut Stream, method: String, qs: Option<BTreeMap<String, String>
                         //queue.remove_id(id);
                     }
                 }
-                s.write_str("{}");
-                Ok(())
             },
-            _ => Ok(())
+            _ => ()
         }
+        s.write_str(json::encode(&mpc.queue())[])
     })
 }
 

@@ -15,7 +15,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "mpd"
 version = "0.0.1"
-source = "git+https://github.com/kstep/rust-mpd.git#a02f66358cac2c533a84d2ce5f858514bb03e69f"
+source = "git+https://github.com/kstep/rust-mpd.git#69d13db16e23670bd223d2960fe39ce47c72b82e"
 dependencies = [
  "rustc-serialize 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.1.7 (git+https://github.com/rust-lang/time.git)",
