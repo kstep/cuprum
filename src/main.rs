@@ -5,8 +5,8 @@ extern crate scgi;
 extern crate mpd;
 #[phase(plugin, link)] extern crate log;
 
-use scgi::{TcpSCGIServer, SCGIEnv};
-use std::io::{TcpStream, Stream, IoResult};
+use scgi::{SCGIServer, SCGIEnv};
+use std::io::{TcpStream, TcpListener, Stream, IoResult};
 use mpd::client::MpdClient;
 use rustc_serialize::json;
 use std::collections::BTreeMap;
@@ -123,7 +123,7 @@ fn run_outputs(s: &mut Stream, qs: Option<BTreeMap<String, String>>, mpc: &mut T
 
 fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
 
-    let mut mpc = TcpStream::connect("localhost:6600").map_err(FromError::from_error).and_then(|c| MpdClient::new(c)).unwrap();
+    let mut mpc = TcpStream::connect("192.168.1.10:6600").map_err(FromError::from_error).and_then(|c| MpdClient::new(c)).unwrap();
 
     match env.path("DOCUMENT_URI") {
         None => not_found(s),
@@ -150,6 +150,6 @@ fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
 }
 
 fn main() {
-    let server = TcpSCGIServer::new("localhost:9000").unwrap();
+    let server = SCGIServer::new(TcpListener::bind("0.0.0.0:9000").unwrap());
     server.run(run);
 }

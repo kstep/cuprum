@@ -29,7 +29,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "scgi"
 version = "0.0.1"
-source = "git+https://github.com/kstep/rust-scgi.git#3790f70ff818a9a9cf955ce97f91bfba86238c46"
+source = "git+https://github.com/kstep/rust-scgi.git#e422a715f60003fd09799efc69d9d3b5025b4cc2"
 dependencies = [
  "url 0.2.12 (git+https://github.com/servo/rust-url.git)",
 ]
