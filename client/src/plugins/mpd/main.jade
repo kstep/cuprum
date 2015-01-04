@@ -61,13 +61,13 @@ h1.page-header MPD
         "Artist":{"ng-click": "asc = sort=='tags.Artist'? !asc: sort = 'tags.Artist'", "ng-class": "{'sorted':sort=='tags.Artist', 'sorted-rev':!asc}", "style": "cursor: pointer"},
         "Actions":{style: "width: 10%"}
         }, "Artist", "Title", "Genre", "Time", "Actions")
-        tr(ng-repeat="item in queue | filter:hasField('place') | orderBy:sort:!asc", ng-class="{'success': item.place.id == player.song[0]}", ng-swipe-right="remove(item)", ng-click="player.$set({state:'Play',id:item.id})", style="cursor: pointer")
+        tr(ng-repeat="item in queue | filter:hasField('place') | orderBy:sort:!asc", ng-class="{'success': item.place.id == player.song.id}", ng-swipe-right="remove(item)", ng-click="player.$set({state:'Play',id:item.id})", style="cursor: pointer")
           td {{item.tags.Artist}}
           td {{item.tags.Title}}
           td {{item.tags.Genre}}
           td(style="text-align: right;") {{item.duration / 1000 | time}}
           td.actions: .btn-group
-            button.btn.btn-sm.btn-default(ng-click="player.$set({state:'Play',id:item.id})"): +icon("play")
+            button.btn.btn-sm.btn-default(ng-click="player.$set({state:'Play',id:item.place.id})"): +icon("play")
             button.btn.btn-sm.btn-default(ng-click="remove(item)"): +icon("remove-circle")
 
     tab(heading="Playlists")
