@@ -33,7 +33,7 @@ h1.page-header MPD
     button.btn.btn-default.btn-sm(title="Consume", ng-click="player.$set({'consume':!player.consume})", ng-class="{'active':player.consume}"): +icon("eject")
 
   .col-sm-4
-    output.col-sm-2.text-right.text-nowrap(style="display: inline-block", for="position") {{player.elapsed_time / 1000 | time}} / {{player.total_time / 1000 | time}}
+    output.col-sm-2.text-right.text-nowrap(style="display: inline-block", for="position") {{player.play_time / 1000 | time}} / {{player.total_time / 1000 | time}}
     .col-sm-7: input#position.inline.input-sm(type="range", ng-model="player.progress", ng-model-options="{debounce:500}", ng-change="player.$set({'elapsed_time':floor(player.progress/1000*player.total_time)})", min="0", max="1000", step="10", title="Position")
     button.btn.btn-default.btn-sm(title="Refresh", ng-click="player.$get()"): +icon("refresh")
 
@@ -59,9 +59,9 @@ h1.page-header MPD
         "Genre":{"ng-click": "asc = sort=='tags.Genre'? !asc: sort = 'tags.Genre'", "ng-class": "{'sorted':sort=='tags.Genre', 'sorted-rev':!asc}", "style": "cursor: pointer"},
         "Title":{"ng-click": "asc = sort=='tags.Title'? !asc: sort = 'tags.Title'", "ng-class": "{'sorted':sort=='tags.Title', 'sorted-rev':!asc}", "style": "cursor: pointer"},
         "Artist":{"ng-click": "asc = sort=='tags.Artist'? !asc: sort = 'tags.Artist'", "ng-class": "{'sorted':sort=='tags.Artist', 'sorted-rev':!asc}", "style": "cursor: pointer"},
-        "Actions":{style: "width: 6%"}
+        "Actions":{style: "width: 10%"}
         }, "Artist", "Title", "Genre", "Time", "Actions")
-        tr(ng-repeat="item in queue | filter:hasField('id') | orderBy:sort:!asc", ng-class="{'success': item.id == player.song[0]}", ng-swipe-right="remove(item)", ng-click="player.$set({state:'Play',id:item.id})", style="cursor: pointer")
+        tr(ng-repeat="item in queue | filter:hasField('place') | orderBy:sort:!asc", ng-class="{'success': item.place.id == player.song[0]}", ng-swipe-right="remove(item)", ng-click="player.$set({state:'Play',id:item.id})", style="cursor: pointer")
           td {{item.tags.Artist}}
           td {{item.tags.Title}}
           td {{item.tags.Genre}}

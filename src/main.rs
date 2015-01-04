@@ -12,6 +12,7 @@ use rustc_serialize::json;
 use std::collections::BTreeMap;
 use std::time::duration::Duration;
 use std::error::FromError;
+use std::ascii::AsciiExt;
 
 fn not_found(s: &mut Stream) -> IoResult<()> {
     s.write_str("Status: 404 Not Found\r\n").and_then(|_|
@@ -60,13 +61,13 @@ fn run_player(s: &mut Stream, qs: Option<BTreeMap<String, String>>, mpc: &mut Tc
                             mpc.current_song().and_then(|ref mut s| s.seek(mpc, elapsed_time));
                         }
                         if let Some(state) = qs.get("state") {
-                            match state[] {
-                                "Play" => match qs.get("id").and_then(|v| v.parse()) {
+                            match state.to_ascii_lowercase()[] {
+                                "play" => match qs.get("id").and_then(|v| v.parse()) {
                                     Some(id) => mpc.play_id(id),
                                     None => mpc.play()
                                 },
-                                "Pause" => mpc.pause(true),
-                                "Stop" => mpc.stop(),
+                                "pause" => mpc.pause(true),
+                                "stop" => mpc.stop(),
                                 _ => Ok(())
                             };
                         }
