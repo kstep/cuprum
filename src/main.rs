@@ -82,7 +82,7 @@ fn run_player(s: &mut Stream, qs: Option<BTreeMap<String, String>>, mpc: &mut Tc
     s.write_str(json::encode(&mpc.status())[]))
 }
 
-fn run_queue(s: &mut Stream, method: String, qs: BTreeMap<String, String>, mpc: &mut TcpMpdClient) -> IoResult<()> {
+fn run_queue(s: &mut Stream, method: String, qs: Option<BTreeMap<String, String>>, mpc: &mut TcpMpdClient) -> IoResult<()> {
     debug!("params: {}", qs);
 
     s.write_str("Status: 200 OK\r\n").and_then(|_|
@@ -90,7 +90,14 @@ fn run_queue(s: &mut Stream, method: String, qs: BTreeMap<String, String>, mpc: 
     s.write_str("\r\n")).and_then(|_| {
         let mut queue = mpc.queue().unwrap();
         match method[] {
-            "GET" => s.write_str(json::encode(&queue)[]),
+            "GET" => {
+                if let Some(qs) = qs {
+                    if let Some(name) = qs.get("name") {
+                        mpc.load(name);
+                    }
+                }
+                s.write_str(json::encode(&queue)[])
+            },
             "DELETE" => if let Some(id) = qs.get("id").and_then(|v| v.parse::<uint>()) {
                 //queue.remove_id(id);
                 s.write_str("{}")
@@ -134,7 +141,7 @@ fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
             match parts.next() {
                 Some(b"plugins") => match parts.next() {
                     Some(b"mpd") => match parts.next() {
-                        Some(b"queue.json") => run_queue(s, env.get("REQUEST_METHOD").unwrap(), env.query().unwrap(), &mut mpc),
+                        Some(b"queue.json") => run_queue(s, env.method(), env.query(), &mut mpc),
                         Some(b"player.json") => run_player(s, env.query(), &mut mpc),
                         Some(b"current-song.json") => json_result(s, json::encode(&mpc.current_song())),
                         Some(b"outputs.json") => run_outputs(s, env.query(), &mut mpc),

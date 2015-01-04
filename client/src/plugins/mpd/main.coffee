@@ -59,7 +59,7 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
             .result.then (song) -> song.$remove()
 
         $scope.load = (playlist) ->
-            $scope.queue = Queue.load { path: playlist.path }
+            $scope.queue = Queue.load { name: playlist.name }
 
         $scope.library = [
             {artist: 'Alicia Keys', title: 'A Harlem Love Story (Fallin\' / A Woman\'s Worth)', genre: 'R&B/Soul', time: 10*60+4}
