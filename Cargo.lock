@@ -15,7 +15,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "mpd"
 version = "0.0.1"
-source = "git+https://github.com/kstep/rust-mpd.git#73643d96e506b0cc849b5e650b5466efdf4e2752"
+source = "git+https://github.com/kstep/rust-mpd.git#a02f66358cac2c533a84d2ce5f858514bb03e69f"
 dependencies = [
  "rustc-serialize 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "time 0.1.7 (git+https://github.com/rust-lang/time.git)",
@@ -29,7 +29,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "scgi"
 version = "0.0.1"
-source = "git+https://github.com/kstep/rust-scgi.git#e422a715f60003fd09799efc69d9d3b5025b4cc2"
+source = "git+https://github.com/kstep/rust-scgi.git#a8622f5bd94ca2a886da3993aafd6d9031c517af"
 dependencies = [
  "url 0.2.12 (git+https://github.com/servo/rust-url.git)",
 ]

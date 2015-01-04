@@ -91,17 +91,20 @@ fn run_queue(s: &mut Stream, method: String, qs: Option<BTreeMap<String, String>
         let mut queue = mpc.queue().unwrap();
         match method[] {
             "GET" => {
-                if let Some(qs) = qs {
+                if let Some(ref qs) = qs {
                     if let Some(name) = qs.get("name") {
-                        mpc.load(name);
+                        mpc.load(name[]);
                     }
                 }
                 s.write_str(json::encode(&queue)[])
             },
-            "DELETE" => if let Some(id) = qs.get("id").and_then(|v| v.parse::<uint>()) {
-                //queue.remove_id(id);
-                s.write_str("{}")
-            } else {
+            "DELETE" => {
+                if let Some(ref qs) = qs {
+                    if let Some(id) = qs.get("id").and_then(|v| v.parse::<uint>()) {
+                        //queue.remove_id(id);
+                    }
+                }
+                s.write_str("{}");
                 Ok(())
             },
             _ => Ok(())
