@@ -1,4 +1,4 @@
-angular.module 'ngenti', ['ng', 'ngRoute', 'ngenti.plugins.mpd']
+angular.module 'ngenti', ['ng', 'ngRoute', 'ngenti.plugins.mpd', 'ngenti.plugins.dnsmasq']
     .filter 'time', [->
         d2 = (v) -> if (v < 10)
                 '0' + v

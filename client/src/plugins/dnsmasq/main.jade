@@ -1,0 +1,19 @@
+//- vim: sw=2
+
+mixin table(attrs, ...titles)
+  table.table
+    thead: tr
+      each title in titles
+        th&attributes(attrs[title]||{})= title
+
+    tbody
+      block
+
+h1.page-header Dnsmasq Leases
++table({}, "Host ID", "Host name", "MAC address", "IP address", "Expiration date")
+  tr(ng-repeat="item in leases")
+    td {{item.hostid}}
+    td {{item.hostname}}
+    td {{item.macaddr}}
+    td {{item.ipaddr}}
+    td {{item.expires * 1000 | date:"medium"}}

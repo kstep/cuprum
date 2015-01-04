@@ -1,4 +1,5 @@
 #![feature(slicing_syntax, phase)]
+#![feature(old_orphan_check)]
 
 extern crate "rustc-serialize" as rustc_serialize;
 extern crate scgi;
@@ -7,6 +8,8 @@ extern crate mpd;
 
 use scgi::{SCGIServer, SCGIEnv};
 use std::io::{TcpStream, TcpListener, Stream, IoResult};
+use std::io::{File, BufferedReader};
+use std::path::Path;
 use mpd::client::MpdClient;
 use rustc_serialize::json;
 use std::collections::BTreeMap;
@@ -146,6 +149,33 @@ fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
                         Some(b"current-song.json") => json_result(s, json::encode(&mpc.current_song())),
                         Some(b"outputs.json") => run_outputs(s, env.query(), &mut mpc),
                         Some(b"playlists.json") => json_result(s, json::encode(&mpc.playlists())),
+                        _ => not_found(s)
+                    },
+                    Some(b"dnsmasq") => match parts.next() {
+                        Some(b"leases.json") => {
+                            let mut leases_file = BufferedReader::new(File::open(&Path::new("/var/lib/misc/dnsmasq.leases")).unwrap());
+
+                            #[derive(RustcEncodable)]
+                            struct DnsmasqLease {
+                                expires: u64,
+                                macaddr: String,
+                                ipaddr: String,
+                                hostname: String,
+                                hostid: String
+                            };
+
+                            let leases = leases_file.lines().flat_map(|line| line.ok().into_iter()).map(|line| {
+                                let mut rec = line.trim().splitn(4, ' ');
+                                DnsmasqLease {
+                                    expires: rec.next().unwrap().parse().unwrap(),
+                                    macaddr: rec.next().unwrap().to_string(),
+                                    ipaddr: rec.next().unwrap().to_string(),
+                                    hostname: rec.next().unwrap().to_string(),
+                                    hostid: rec.next().unwrap().to_string(),
+                                }
+                            }).collect::<Vec<DnsmasqLease>>();
+                            json_result(s, json::encode(&leases))
+                        },
                         _ => not_found(s)
                     },
                     _ => not_found(s)
