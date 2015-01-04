@@ -10,7 +10,7 @@ angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
             query: { method: 'GET', isArray: true }
             load: { method: 'GET', isArray: true }
             save: { method: 'GET' }
-            remove: { method: 'DELETE', params: {id: '@id'} }
+            remove: { method: 'DELETE', params: {id: '@place.id'} }
     ]
     .factory 'Stats', ['$resource', ($resource) ->
         $resource '/plugins/mpd/stats.json'

@@ -11,6 +11,7 @@ use std::io::{TcpStream, TcpListener, Stream, IoResult};
 use std::io::{File, BufferedReader};
 use std::path::Path;
 use mpd::client::MpdClient;
+use mpd::queue::MpdQueue;
 use rustc_serialize::json;
 use std::collections::BTreeMap;
 use std::time::duration::Duration;
@@ -102,7 +103,7 @@ fn run_queue(s: &mut Stream, method: String, qs: Option<BTreeMap<String, String>
             "DELETE" => {
                 if let Some(ref qs) = qs {
                     if let Some(id) = qs.get("id").and_then(|v| v.parse::<uint>()) {
-                        //queue.remove_id(id);
+                        MpdQueue::removeid(mpc, id);
                     }
                 }
             },

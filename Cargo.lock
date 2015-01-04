@@ -3,7 +3,7 @@ name = "ngenti"
 version = "0.0.1"
 dependencies = [
  "mpd 0.0.1 (git+https://github.com/kstep/rust-mpd.git)",
- "rustc-serialize 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "scgi 0.0.1 (git+https://github.com/kstep/rust-scgi.git)",
 ]
 
@@ -15,15 +15,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "mpd"
 version = "0.0.1"
-source = "git+https://github.com/kstep/rust-mpd.git#69d13db16e23670bd223d2960fe39ce47c72b82e"
+source = "git+https://github.com/kstep/rust-mpd.git#e139d85eb78721d3ea9f0f878bc132813f49c704"
 dependencies = [
- "rustc-serialize 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "time 0.1.7 (git+https://github.com/rust-lang/time.git)",
+ "rustc-serialize 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "time 0.1.9 (git+https://github.com/rust-lang/time.git)",
 ]
 
 [[package]]
 name = "rustc-serialize"
-version = "0.2.2"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -31,22 +31,22 @@ name = "scgi"
 version = "0.0.1"
 source = "git+https://github.com/kstep/rust-scgi.git#a8622f5bd94ca2a886da3993aafd6d9031c517af"
 dependencies = [
- "url 0.2.12 (git+https://github.com/servo/rust-url.git)",
+ "url 0.2.13 (git+https://github.com/servo/rust-url.git)",
 ]
 
 [[package]]
 name = "time"
-version = "0.1.7"
-source = "git+https://github.com/rust-lang/time.git#e59dbdd87464c05cfb505a81d8964574083d0834"
+version = "0.1.9"
+source = "git+https://github.com/rust-lang/time.git#a0a0dedc41fac4d2504db533b70af1686ec19d15"
 dependencies = [
  "gcc 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "url"
-version = "0.2.12"
-source = "git+https://github.com/servo/rust-url.git#956e211bfed209a4bacf2371fc96736b00113f59"
+version = "0.2.13"
+source = "git+https://github.com/servo/rust-url.git#66167439c9176ff8915f4642973e71d3c89e7e0a"
 dependencies = [
- "rustc-serialize 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rustc-serialize 0.2.3 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
