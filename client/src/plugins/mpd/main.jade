@@ -71,11 +71,11 @@ h1.page-header MPD
             button.btn.btn-sm.btn-default(ng-click="remove(item)"): +icon("remove-circle")
 
     tab(heading="Playlists")
-      +table({"Actions":{style: 'width: 6%'}}, "Name", "Actions")
+      +table({"Actions":{style: 'width: 10%'}}, "Name", "Actions")
         tr(ng-repeat="item in playlists")
-          td {{item.path}}
+          td {{item.name}}
           td.actions: .btn-group
-            button.btn.btn-sm.btn-default(ng-click="load(item.path)"): +icon("play")
+            button.btn.btn-sm.btn-default(ng-click="load(item.name)"): +icon("play")
             button.btn.btn-sm.btn-default: +icon("remove-circle")
 
     tab(heading="Library")
