@@ -1,6 +1,6 @@
 #![feature(slicing_syntax, phase)]
 
-extern crate serialize;
+extern crate "rustc-serialize" as rustc_serialize;
 extern crate scgi;
 extern crate mpd;
 #[phase(plugin, link)] extern crate log;
@@ -8,8 +8,7 @@ extern crate mpd;
 use scgi::{TcpSCGIServer, SCGIEnv};
 use std::io::{TcpStream, Stream, IoResult};
 use mpd::client::MpdClient;
-use serialize::json;
-use std::str::from_utf8;
+use rustc_serialize::json;
 use std::collections::BTreeMap;
 use std::time::duration::Duration;
 use std::error::FromError;
@@ -43,19 +42,19 @@ fn run_player(s: &mut Stream, qs: Option<BTreeMap<String, String>>, mpc: &mut Tc
                     "prev" => mpc.prev(),
                     "set" => {
                         if let Some(repeat) = qs.get("repeat").and_then(|v| v.parse()) {
-                            mpc.set_repeat(repeat);
+                            mpc.repeat(repeat);
                         }
                         if let Some(single) = qs.get("single").and_then(|v| v.parse()) {
-                            mpc.set_single(single);
+                            mpc.single(single);
                         }
                         if let Some(random) = qs.get("random").and_then(|v| v.parse()) {
-                            mpc.set_random(random);
+                            mpc.random(random);
                         }
                         if let Some(consume) = qs.get("consume").and_then(|v| v.parse()) {
-                            mpc.set_consume(consume);
+                            mpc.consume(consume);
                         }
                         if let Some(volume) = qs.get("volume").and_then(|v| v.parse()) {
-                            mpc.set_volume(volume);
+                            mpc.volume(volume);
                         }
                         if let Some(elapsed_time) = qs.get("elapsed_time").and_then(|v| v.parse()).map(|v| Duration::milliseconds(v)) {
                             mpc.current_song().and_then(|ref mut s| s.seek(mpc, elapsed_time));
@@ -88,11 +87,11 @@ fn run_queue(s: &mut Stream, method: String, qs: BTreeMap<String, String>, mpc: 
     s.write_str("Status: 200 OK\r\n").and_then(|_|
     s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|_|
     s.write_str("\r\n")).and_then(|_| {
-        let mut queue = mpc.queue();
+        let mut queue = mpc.queue().unwrap();
         match method[] {
-            "GET" => s.write_str(json::encode(&queue.iter())[]),
-            "DELETE" => if let Some(id) = qs.get("id").and_then(|v| v.parse()) {
-                queue.remove_id(id);
+            "GET" => s.write_str(json::encode(&queue)[]),
+            "DELETE" => if let Some(id) = qs.get("id").and_then(|v| v.parse::<uint>()) {
+                //queue.remove_id(id);
                 s.write_str("{}")
             } else {
                 Ok(())
@@ -107,15 +106,12 @@ fn run_outputs(s: &mut Stream, qs: Option<BTreeMap<String, String>>, mpc: &mut T
     if let Some(ref qs) = qs {
         if let Some(enabled) = qs.get("enabled").and_then(|v| v.parse()) {
             if let Some(id) = qs.get("id").and_then(|v| v.parse()) {
-                if let Some(Ok(mut output)) = mpc.outputs().find(|o| match *o {
-                    Ok(ref v) => v.id == id,
-                    Err(_) => false
-                }) {
+                if let Ok(Some(mut output)) = mpc.outputs().map(|os| os.into_iter().find(|o| o.id == id)) {
                     debug!("enabled = {}, id = {}", enabled, id);
                     if enabled {
-                        output.enable(mpc);
+                        output.enable(mpc).unwrap();
                     } else {
-                        output.disable(mpc);
+                        output.disable(mpc).unwrap();
                     }
                     return json_result(s, json::encode(&output));
                 }

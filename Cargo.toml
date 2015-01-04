@@ -9,3 +9,6 @@ git = "https://github.com/kstep/rust-scgi.git"
 
 [dependencies.mpd]
 git = "https://github.com/kstep/rust-mpd.git"
+
+[dependencies]
+rustc-serialize = "*"
