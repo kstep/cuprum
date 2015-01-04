@@ -5,61 +5,64 @@ extern crate scgi;
 extern crate mpd;
 #[phase(plugin, link)] extern crate log;
 
-use scgi::{SCGIBind, TcpSCGIServer, SCGIEnv};
-use std::io::{Stream, IoResult};
-use mpd::connection::MpdConnection;
+use scgi::{TcpSCGIServer, SCGIEnv};
+use std::io::{TcpStream, Stream, IoResult};
+use mpd::client::MpdClient;
 use serialize::json;
 use std::str::from_utf8;
-use std::collections::TreeMap;
+use std::collections::BTreeMap;
 use std::time::duration::Duration;
+use std::error::FromError;
 
 fn not_found(s: &mut Stream) -> IoResult<()> {
-    s.write_str("Status: 404 Not Found\r\n").and_then(|()|
-    s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|()|
-    s.write_str("\r\n")).and_then(|()|
+    s.write_str("Status: 404 Not Found\r\n").and_then(|_|
+    s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|_|
+    s.write_str("\r\n")).and_then(|_|
     s.write_str("{\"error\":\"object not found\"}"))
 }
 
 fn json_result(s: &mut Stream, r: String) -> IoResult<()> {
-    s.write_str("Status: 200 OK\r\n").and_then(|()|
-    s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|()|
-    s.write_str("\r\n")).and_then(|()|
+    s.write_str("Status: 200 OK\r\n").and_then(|_|
+    s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|_|
+    s.write_str("\r\n")).and_then(|_|
     s.write_str(r[]))
 }
 
-fn run_player(s: &mut Stream, qs: Option<TreeMap<String, String>>, mpc: &mut MpdConnection) -> IoResult<()> {
+type TcpMpdClient = MpdClient<TcpStream>;
+
+fn run_player(s: &mut Stream, qs: Option<BTreeMap<String, String>>, mpc: &mut TcpMpdClient) -> IoResult<()> {
     debug!("params: {}", qs);
 
-    s.write_str("Status: 200 OK\r\n").and_then(|()|
-    s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|()|
-    s.write_str("\r\n")).and_then(|()| {
+    s.write_str("Status: 200 OK\r\n").and_then(|_|
+    s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|_|
+    s.write_str("\r\n")).and_then(|_| {
         if let Some(ref qs) = qs {
-            if let Some(cmd) = qs.get(&"cmd".into_string()) {
+            if let Some(cmd) = qs.get("cmd") {
                 match cmd[] {
                     "next" => mpc.next(),
                     "prev" => mpc.prev(),
                     "set" => {
-                        if let Some(repeat) = qs.get(&"repeat".into_string()).and_then(|v| from_str(v[])) {
+                        if let Some(repeat) = qs.get("repeat").and_then(|v| v.parse()) {
                             mpc.set_repeat(repeat);
                         }
-                        if let Some(single) = qs.get(&"single".into_string()).and_then(|v| from_str(v[])) {
+                        if let Some(single) = qs.get("single").and_then(|v| v.parse()) {
                             mpc.set_single(single);
                         }
-                        if let Some(random) = qs.get(&"random".into_string()).and_then(|v| from_str(v[])) {
+                        if let Some(random) = qs.get("random").and_then(|v| v.parse()) {
                             mpc.set_random(random);
                         }
-                        if let Some(consume) = qs.get(&"consume".into_string()).and_then(|v| from_str(v[])) {
+                        if let Some(consume) = qs.get("consume").and_then(|v| v.parse()) {
                             mpc.set_consume(consume);
                         }
-                        if let Some(volume) = qs.get(&"volume".into_string()).and_then(|v| from_str(v[])) {
+                        if let Some(volume) = qs.get("volume").and_then(|v| v.parse()) {
                             mpc.set_volume(volume);
                         }
-                        if let Some(elapsed_time) = qs.get(&"elapsed_time".into_string()).and_then(|v| from_str(v[])).map(|v| Duration::milliseconds(v)) {
+                        if let Some(elapsed_time) = qs.get("elapsed_time").and_then(|v| v.parse()).map(|v| Duration::milliseconds(v)) {
                             mpc.current_song().and_then(|ref mut s| s.seek(mpc, elapsed_time));
                         }
-                        if let Some(state) = qs.get(&"state".into_string()) {
+                        if let Some(state) = qs.get("state") {
                             match state[] {
-                                "Play" => match qs.get(&"id".into_string()).and_then(|v| from_str(v[])) {
+                                "Play" => match qs.get("id").and_then(|v| v.parse()) {
                                     Some(id) => mpc.play_id(id),
                                     None => mpc.play()
                                 },
@@ -75,20 +78,20 @@ fn run_player(s: &mut Stream, qs: Option<TreeMap<String, String>>, mpc: &mut Mpd
             }
         }
         Ok(())
-    }).and_then(|()|
+    }).and_then(|_|
     s.write_str(json::encode(&mpc.status())[]))
 }
 
-fn run_queue(s: &mut Stream, method: String, qs: TreeMap<String, String>, mpc: &mut MpdConnection) -> IoResult<()> {
+fn run_queue(s: &mut Stream, method: String, qs: BTreeMap<String, String>, mpc: &mut TcpMpdClient) -> IoResult<()> {
     debug!("params: {}", qs);
 
-    s.write_str("Status: 200 OK\r\n").and_then(|()|
-    s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|()|
-    s.write_str("\r\n")).and_then(|()| {
+    s.write_str("Status: 200 OK\r\n").and_then(|_|
+    s.write_str("Content-Type: application/json; charset=utf-8\r\n")).and_then(|_|
+    s.write_str("\r\n")).and_then(|_| {
         let mut queue = mpc.queue();
         match method[] {
             "GET" => s.write_str(json::encode(&queue.iter())[]),
-            "DELETE" => if let Some(id) = qs.get(&"id".into_string()).and_then(|v| from_str(v[])) {
+            "DELETE" => if let Some(id) = qs.get("id").and_then(|v| v.parse()) {
                 queue.remove_id(id);
                 s.write_str("{}")
             } else {
@@ -99,23 +102,23 @@ fn run_queue(s: &mut Stream, method: String, qs: TreeMap<String, String>, mpc: &
     })
 }
 
-fn run_outputs(s: &mut Stream, qs: Option<TreeMap<String, String>>, mpc: &mut MpdConnection) -> IoResult<()> {
+fn run_outputs(s: &mut Stream, qs: Option<BTreeMap<String, String>>, mpc: &mut TcpMpdClient) -> IoResult<()> {
     debug!("params: {}", qs);
     if let Some(ref qs) = qs {
-        if let (Some(enabled), Some(id)) = (
-            qs.get(&"enabled".into_string()).and_then(|v| from_str(v[])),
-            qs.get(&"id".into_string()).and_then(|v| from_str(v[]))) {
-
-            mpc.enable_output_id(id, enabled);
-            let output = mpc.outputs().ok().and_then(|ref mut outs| {
-                outs.find(|out| out.as_ref().map(|out| out.id() == id).unwrap_or(false))
-            });
-
-            match output {
-                Some(Ok(ref o)) => {
-                    return json_result(s, json::encode(o));
-                },
-                _ => ()
+        if let Some(enabled) = qs.get("enabled").and_then(|v| v.parse()) {
+            if let Some(id) = qs.get("id").and_then(|v| v.parse()) {
+                if let Some(Ok(mut output)) = mpc.outputs().find(|o| match *o {
+                    Ok(ref v) => v.id == id,
+                    Err(_) => false
+                }) {
+                    debug!("enabled = {}, id = {}", enabled, id);
+                    if enabled {
+                        output.enable(mpc);
+                    } else {
+                        output.disable(mpc);
+                    }
+                    return json_result(s, json::encode(&output));
+                }
             }
         }
     }
@@ -124,7 +127,7 @@ fn run_outputs(s: &mut Stream, qs: Option<TreeMap<String, String>>, mpc: &mut Mp
 
 fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
 
-    let mut mpc = MpdConnection::new(None, 6600).unwrap().unwrap();
+    let mut mpc = TcpStream::connect("localhost:6600").map_err(FromError::from_error).and_then(|c| MpdClient::new(c)).unwrap();
 
     match env.path("DOCUMENT_URI") {
         None => not_found(s),
@@ -151,6 +154,6 @@ fn run(s: &mut Stream, env: &SCGIEnv) -> IoResult<()> {
 }
 
 fn main() {
-    let server : TcpSCGIServer = SCGIBind::new("localhost:9000").unwrap();
+    let server = TcpSCGIServer::new("localhost:9000").unwrap();
     server.run(run);
 }
