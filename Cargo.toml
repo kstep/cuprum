@@ -6,5 +6,8 @@ authors = ["Konstantin Stepanov <me@kstep.me>"]
 
 [dependencies]
 nickel = "*"
-mpd = "*"
 rustc-serialize = "*"
+log = "*"
+
+[dependencies.mpd]
+path = "../rust-mpd"

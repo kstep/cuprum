@@ -2,7 +2,8 @@
 name = "cuprum"
 version = "0.0.1"
 dependencies = [
- "mpd 0.0.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log 0.3.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "mpd 0.0.8",
  "nickel 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
@@ -124,8 +125,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "mpd"
-version = "0.0.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
+version = "0.0.8"
 dependencies = [
  "bufstream 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "rustc-serialize 0.3.15 (registry+https://github.com/rust-lang/crates.io-index)",
