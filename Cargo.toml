@@ -1,14 +1,10 @@
 [package]
 
-name = "ngenti"
+name = "cuprum"
 version = "0.0.1"
 authors = ["Konstantin Stepanov <me@kstep.me>"]
 
-[dependencies.scgi]
-git = "https://github.com/kstep/rust-scgi.git"
-
-[dependencies.mpd]
-git = "https://github.com/kstep/rust-mpd.git"
-
 [dependencies]
+nickel = "*"
+mpd = "*"
 rustc-serialize = "*"

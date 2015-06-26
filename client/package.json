@@ -1,8 +1,8 @@
 {
-  "name": "ngenti",
+  "name": "cuprum",
   "version": "0.0.1",
   "description": "AngularJS based admin panel with Rust backend",
-  "main": "ngenti.js",
+  "main": "cuprum.js",
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-bower-concat": "^0.4.0",

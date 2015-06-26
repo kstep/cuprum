@@ -4,7 +4,7 @@ Nginx configuration example:
     server {
         listen 9898;
 
-        root /home/kstep/git/ngenti/client/dest;
+        root /home/kstep/git/cuprum/client/dest;
 
         location / {
             try_files $uri @backend;

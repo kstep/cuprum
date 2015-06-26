@@ -1,4 +1,4 @@
-angular.module 'ngenti.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
+angular.module 'cuprum.plugins.mpd', ['ui.bootstrap', 'ngResource', 'ngTouch']
     .config ['$routeProvider', ($route) ->
         $route.when '/mpd',
             templateUrl: 'plugins/mpd/main.html',

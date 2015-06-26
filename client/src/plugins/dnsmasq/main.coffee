@@ -1,4 +1,4 @@
-angular.module 'ngenti.plugins.dnsmasq', ['ui.bootstrap', 'ngResource', 'ngTouch']
+angular.module 'cuprum.plugins.dnsmasq', ['ui.bootstrap', 'ngResource', 'ngTouch']
     .config ['$routeProvider', ($route) ->
         $route.when '/dnsmasq',
             templateUrl: 'plugins/dnsmasq/main.html',
